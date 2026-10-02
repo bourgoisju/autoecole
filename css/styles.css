@@ -96,7 +96,7 @@ p { margin: 0 0 1rem; }
   border-bottom: 1px solid var(--blue-line);
 }
 .header__inner { display: flex; align-items: center; justify-content: space-between; min-height: 72px; gap: 16px; }
-.brand__logo { height: 42px; width: auto; }
+.brand__logo { height: 52px; width: auto; }
 .nav { display: flex; align-items: center; gap: clamp(10px, 2vw, 26px); }
 .nav__link {
   font-family: var(--ff-head); font-weight: 600; font-size: .96rem; color: var(--navy);
