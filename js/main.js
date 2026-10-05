@@ -37,38 +37,24 @@
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---- The vehicle on each road divider previews the next section ---- */
-  var routeVehicles = {
-    formations: [
-      { icon: "car", label: "Voiture" },
-      { icon: "moto", label: "Moto" },
-      { icon: "scooter", label: "Cyclo" },
-      { icon: "microcar", label: "Voiturette" },
-      { icon: "trailer", label: "Remorque" }
-    ],
-    plus: [{ icon: "car", label: "Voiture" }],
-    financement: [{ icon: "car", label: "Voiture" }],
-    contact: [{ icon: "car", label: "Voiture" }],
-    "permis-b": [{ icon: "car", label: "Voiture" }],
-    aac: [{ icon: "car", label: "Conduite accompagnée" }],
-    moto: [{ icon: "moto", label: "Moto" }],
-    am: [{ icon: "scooter", label: "Cyclo" }, { icon: "microcar", label: "Voiturette" }],
-    remorque: [{ icon: "trailer", label: "Remorque" }],
-    complementaires: [{ icon: "moto", label: "Passerelles" }],
-    prestations: [{ icon: "car", label: "Prestations" }]
-  };
+  /* ---- The full lesson fleet connects every section ---- */
+  var routeVehicles = [
+    { icon: "car", label: "Voiture" },
+    { icon: "moto", label: "Moto" },
+    { icon: "scooter", label: "Cyclo" },
+    { icon: "microcar", label: "Voiturette" },
+    { icon: "trailer", label: "Remorque" }
+  ];
   var sections = document.querySelectorAll("main > section");
   var dividers = [];
   sections.forEach(function (section, index) {
     if (index === 0) { return; }
     var divider = document.createElement("div");
-    divider.className = "road-divider";
+    divider.className = "road-divider road-divider--fleet";
     divider.setAttribute("aria-hidden", "true");
     var vehicleGroup = document.createElement("span");
     vehicleGroup.className = "road-divider__vehicles";
-    var vehicles = routeVehicles[section.id] || [{ icon: "car", label: "Voiture" }];
-    if (vehicles.length > 2) { divider.classList.add("road-divider--fleet"); }
-    vehicles.forEach(function (vehicle) {
+    routeVehicles.forEach(function (vehicle) {
       var item = document.createElement("span");
       item.className = "road-divider__item";
       var icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
