@@ -13,6 +13,10 @@
     <circle cx="50" cy="32" r="5" fill="none" stroke="currentColor" stroke-width="3"/>
     <path d="M14 32h25l9-17h-8m8 0 3-7h6M23 32l-4-15h11m-10 0-4-4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   </symbol>
+  <symbol id="microcar" viewBox="0 0 64 40">
+    <path d="M9 31h46V21l-8-10H24L14 21l-5 1v9Zm9-10h32M29 12v9M11 31h44" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="20" cy="32" r="4" fill="currentColor"/><circle cx="47" cy="32" r="4" fill="currentColor"/>
+  </symbol>
   <symbol id="trailer" viewBox="0 0 64 40">
     <path d="M5 17h39v16H5zm39 12h12l4 4M10 22h15m4 0h9" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
     <circle cx="17" cy="33" r="4" fill="currentColor"/><circle cx="37" cy="33" r="4" fill="currentColor"/>

@@ -37,7 +37,26 @@
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---- A small car connects each section on the same route ---- */
+  /* ---- The vehicle on each road divider previews the next section ---- */
+  var routeVehicles = {
+    formations: [
+      { icon: "car", label: "Voiture" },
+      { icon: "moto", label: "Moto" },
+      { icon: "scooter", label: "Cyclo" },
+      { icon: "microcar", label: "Voiturette" },
+      { icon: "trailer", label: "Remorque" }
+    ],
+    plus: [{ icon: "car", label: "Voiture" }],
+    financement: [{ icon: "car", label: "Voiture" }],
+    contact: [{ icon: "car", label: "Voiture" }],
+    "permis-b": [{ icon: "car", label: "Voiture" }],
+    aac: [{ icon: "car", label: "Conduite accompagnée" }],
+    moto: [{ icon: "moto", label: "Moto" }],
+    am: [{ icon: "scooter", label: "Cyclo" }, { icon: "microcar", label: "Voiturette" }],
+    remorque: [{ icon: "trailer", label: "Remorque" }],
+    complementaires: [{ icon: "moto", label: "Passerelles" }],
+    prestations: [{ icon: "car", label: "Prestations" }]
+  };
   var sections = document.querySelectorAll("main > section");
   var dividers = [];
   sections.forEach(function (section, index) {
@@ -45,7 +64,26 @@
     var divider = document.createElement("div");
     divider.className = "road-divider";
     divider.setAttribute("aria-hidden", "true");
-    divider.innerHTML = '<span class="road-divider__car"><svg viewBox="0 0 64 40" focusable="false"><path d="M8 26h48l-4-10a5 5 0 0 0-5-3H18a5 5 0 0 0-5 3L8 26Zm0 0v7h6m42-7v7h-6M17 19h30" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="33" r="4" fill="currentColor"/><circle cx="46" cy="33" r="4" fill="currentColor"/></svg></span>';
+    var vehicleGroup = document.createElement("span");
+    vehicleGroup.className = "road-divider__vehicles";
+    var vehicles = routeVehicles[section.id] || [{ icon: "car", label: "Voiture" }];
+    if (vehicles.length > 2) { divider.classList.add("road-divider--fleet"); }
+    vehicles.forEach(function (vehicle) {
+      var item = document.createElement("span");
+      item.className = "road-divider__item";
+      var icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      icon.setAttribute("viewBox", "0 0 64 40");
+      icon.setAttribute("focusable", "false");
+      var use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+      use.setAttribute("href", "assets/img/vehicle-icons.svg#" + vehicle.icon);
+      icon.appendChild(use);
+      var label = document.createElement("span");
+      label.textContent = vehicle.label;
+      item.appendChild(icon);
+      item.appendChild(label);
+      vehicleGroup.appendChild(item);
+    });
+    divider.appendChild(vehicleGroup);
     section.parentNode.insertBefore(divider, section);
     dividers.push(divider);
   });
