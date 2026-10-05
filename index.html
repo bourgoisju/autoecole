@@ -38,11 +38,11 @@
   <main>
 
     <!-- ======================= HERO ======================= -->
-    <section class="hero">
+    <section class="hero" aria-labelledby="home-title">
       <div class="container hero__inner">
         <div class="hero__content">
           <p class="eyebrow">Fréjus · Saint-Raphaël · Est varois</p>
-          <h1>Passez votre permis dans une auto-école qui a fait ses preuves.</h1>
+          <h1 id="home-title">Passez votre permis dans une auto-école qui a fait ses preuves.</h1>
           <p class="hero__lead">
             Près de <strong>30 ans d'expérience</strong> au service des conducteurs de demain.
             Permis voiture, moto, conduite accompagnée, cyclomoteur, voiturette et remorque —
@@ -52,6 +52,13 @@
             <a href="tarifs.html" class="btn btn--primary">Voir nos tarifs</a>
             <a href="#contact" class="btn btn--ghost">Nous contacter</a>
           </div>
+          <aside class="award" aria-label="Distinction">
+            <span class="award__star" aria-hidden="true">★</span>
+            <div>
+              <p class="award__title">Meilleures Auto-Écoles de France 2026</p>
+              <p class="award__src">Palmarès Auto&nbsp;Plus × VroomVroom · 2026-2027</p>
+            </div>
+          </aside>
           <ul class="hero__facts">
             <li><strong>Permis à 1&nbsp;€/jour</strong><span>& financement CPF</span></li>
             <li><strong>Boîte manuelle & auto</strong><span>au choix</span></li>
@@ -59,14 +66,10 @@
           </ul>
         </div>
 
-        <aside class="award" aria-label="Distinction">
-          <div class="award__body">
-            <span class="award__star">★</span>
-            <p class="award__title">Meilleures Auto-Écoles de France 2026</p>
-            <p class="award__src">Palmarès <strong>Auto&nbsp;Plus</strong> × <strong>VroomVroom</strong> · 2026-2027</p>
-            <p class="award__note">Classement établi d'après les données officielles de la Délégation à la Sécurité routière (data.gouv.fr).</p>
-          </div>
-        </aside>
+        <div class="hero__visual">
+          <img src="assets/img/coastal-driving.webp" alt="" width="1672" height="941" fetchpriority="high" />
+          <span class="hero__visual-label">La côte varoise · illustration</span>
+        </div>
       </div>
     </section>
 
@@ -85,6 +88,7 @@
 
         <div class="cards">
           <article class="card">
+            <svg class="card__illustration" viewBox="0 0 64 40" aria-hidden="true"><use href="assets/img/vehicle-icons.svg#car"></use></svg>
             <span class="card__pin">B</span>
             <h3>Permis B — Voiture</h3>
             <p>Boîte manuelle ou automatique, avec ou sans code en ligne. 20 leçons d'une heure et bilan personnalisé à chaque séance.</p>
@@ -93,6 +97,7 @@
           </article>
 
           <article class="card">
+            <svg class="card__illustration" viewBox="0 0 64 40" aria-hidden="true"><use href="assets/img/vehicle-icons.svg#car"></use></svg>
             <span class="card__pin">AAC</span>
             <h3>Conduite accompagnée</h3>
             <p>Dès 15&nbsp;ans. Formation initiale puis conduite avec vos accompagnateurs pour aborder l'examen en confiance.</p>
@@ -101,6 +106,7 @@
           </article>
 
           <article class="card">
+            <svg class="card__illustration" viewBox="0 0 64 40" aria-hidden="true"><use href="assets/img/vehicle-icons.svg#moto"></use></svg>
             <span class="card__pin">A</span>
             <h3>Permis Moto — A1 / A2 / A</h3>
             <p>Formation moto complète, passerelle A2 vers A toutes cylindrées et équivalence 125&nbsp;cm³ en 7&nbsp;heures.</p>
@@ -109,6 +115,7 @@
           </article>
 
           <article class="card">
+            <svg class="card__illustration" viewBox="0 0 64 40" aria-hidden="true"><use href="assets/img/vehicle-icons.svg#scooter"></use></svg>
             <span class="card__pin">AM</span>
             <h3>Permis AM — dès 14 ans</h3>
             <p>Cyclomoteur et quadricycle léger (voiturette). 2&nbsp;heures de théorie et 6&nbsp;leçons de conduite avec prêt du scooter.</p>
@@ -117,6 +124,7 @@
           </article>
 
           <article class="card">
+            <svg class="card__illustration" viewBox="0 0 64 40" aria-hidden="true"><use href="assets/img/vehicle-icons.svg#trailer"></use></svg>
             <span class="card__pin">BE</span>
             <h3>Remorque — BE / B96</h3>
             <p>Pour atteler caravane, van ou remorque en toute sécurité. Formation pratique sur plateau et en circulation.</p>
@@ -125,6 +133,7 @@
           </article>
 
           <article class="card">
+            <svg class="card__illustration" viewBox="0 0 64 40" aria-hidden="true"><use href="assets/img/vehicle-icons.svg#gear"></use></svg>
             <span class="card__pin">+</span>
             <h3>Formations rapides</h3>
             <p>Lever de code 78 (boîte auto → manuelle), stage post-permis et passerelles moto, sans examen.</p>
@@ -143,6 +152,10 @@
           <h2>Ce qui fait la différence chez nous.</h2>
           <p>Une pédagogie exigeante et bienveillante, pensée pour la réussite du premier passage.</p>
         </div>
+        <figure class="plus__visual">
+          <img src="assets/img/lesson-review.webp" alt="Illustration d'un élève et d'un moniteur faisant le bilan d'une leçon près d'une voiture" width="1448" height="1086" loading="lazy" />
+          <figcaption>À chaque étape, on avance ensemble.</figcaption>
+        </figure>
         <ul class="plus__list">
           <li>
             <h3>Bilan à chaque leçon</h3>
@@ -179,11 +192,12 @@
           </ul>
         </div>
         <div class="finance__note">
-          <h3>Modalités de règlement</h3>
-          <ol>
-            <li>Acompte de <strong>300&nbsp;€</strong> à l'inscription</li>
-            <li>2<sup>e</sup> acompte à la première leçon de conduite</li>
-            <li>Solde à la 10<sup>e</sup> leçon de conduite</li>
+          <p class="finance__eyebrow">Votre parcours de règlement</p>
+          <h3>Trois étapes claires.</h3>
+          <ol class="payment-route">
+            <li><span class="payment-route__num">01</span><span><strong>300&nbsp;€</strong><small>à l'inscription</small></span></li>
+            <li><span class="payment-route__num">02</span><span><strong>2<sup>e</sup> acompte</strong><small>à la première leçon de conduite</small></span></li>
+            <li><span class="payment-route__num">03</span><span><strong>Solde</strong><small>à la 10<sup>e</sup> leçon de conduite</small></span></li>
           </ol>
           <p class="finance__tva">Forfaits assujettis à la TVA (20&nbsp;%).</p>
         </div>
@@ -236,6 +250,19 @@
         </div>
       </div>
 
+      <div class="container contact__arrival">
+        <svg class="contact__arrival-art" viewBox="0 0 250 130" aria-hidden="true">
+          <rect width="250" height="130" rx="14" fill="#eaeefb"/>
+          <path d="M30 98h188M50 98V50l16-11h118l16 11v48M45 52h160" stroke="#123bd1" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M77 98V64h39v34m24 0V64h39v34" stroke="#0a173f" stroke-width="3" fill="none"/>
+          <path d="M72 32h106" stroke="#123bd1" stroke-width="7" stroke-linecap="round"/>
+          <path d="M98 106h56m-47 0 6-8h34l6 8" stroke="#123bd1" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="117" cy="107" r="3" fill="#0a173f"/><circle cx="143" cy="107" r="3" fill="#0a173f"/>
+          <path d="M205 26c-8 0-14 6-14 14 0 11 14 21 14 21s14-10 14-21c0-8-6-14-14-14Z" fill="#123bd1"/><circle cx="205" cy="40" r="5" fill="#fff"/>
+        </svg>
+        <div class="contact__arrival-copy"><strong>Votre prochain départ</strong><span>11 allée du Serpolet · La Tour de Mare · Fréjus</span><small>Illustration d'accueil ; la carte ci-dessous indique l'adresse.</small></div>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=11+All%C3%A9e+du+Serpolet+83600+Fr%C3%A9jus" target="_blank" rel="noopener">Voir l'itinéraire →</a>
+      </div>
       <div class="map">
         <iframe
           title="Localisation de l'auto-école La Tour de Mare à Fréjus"

@@ -37,6 +37,31 @@
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---- A small car connects each section on the same route ---- */
+  var sections = document.querySelectorAll("main > section");
+  var dividers = [];
+  sections.forEach(function (section, index) {
+    if (index === 0) { return; }
+    var divider = document.createElement("div");
+    divider.className = "road-divider";
+    divider.setAttribute("aria-hidden", "true");
+    divider.innerHTML = '<span class="road-divider__car"><svg viewBox="0 0 64 40" focusable="false"><path d="M8 26h48l-4-10a5 5 0 0 0-5-3H18a5 5 0 0 0-5 3L8 26Zm0 0v7h6m42-7v7h-6M17 19h30" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="33" r="4" fill="currentColor"/><circle cx="46" cy="33" r="4" fill="currentColor"/></svg></span>';
+    section.parentNode.insertBefore(divider, section);
+    dividers.push(divider);
+  });
+
+  if (!reduce && "IntersectionObserver" in window) {
+    var roadObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-driving");
+          roadObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    dividers.forEach(function (divider) { roadObserver.observe(divider); });
+  }
+
   if (!reduce && "IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 320" role="img" aria-labelledby="title">
+  <title id="title">Un itinéraire parmi les formations</title>
+  <rect width="620" height="320" rx="20" fill="#f4f7ff"/>
+  <path d="M-16 226C76 226 81 84 183 84S277 250 391 250s124-162 245-162" fill="none" stroke="#d6dff7" stroke-width="54" stroke-linecap="round"/>
+  <path d="M-16 226C76 226 81 84 183 84S277 250 391 250s124-162 245-162" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="11 12" stroke-linecap="round"/>
+  <g font-family="Montserrat,Arial,sans-serif" font-size="13" font-weight="700">
+    <g transform="translate(95 155)">
+      <circle r="24" fill="#123bd1"/><text y="5" fill="#fff" text-anchor="middle">B</text>
+      <text x="-37" y="-38" fill="#0a173f">VOITURE</text>
+    </g>
+    <g transform="translate(215 112)">
+      <circle r="24" fill="#123bd1"/><text y="5" fill="#fff" text-anchor="middle">AAC</text>
+      <text x="39" y="-6" fill="#0a173f">ACCOMPAGNÉE</text>
+    </g>
+    <g transform="translate(383 223)">
+      <circle r="24" fill="#123bd1"/><text y="5" fill="#fff" text-anchor="middle">A2</text>
+      <text x="-22" y="52" fill="#0a173f">MOTO</text>
+    </g>
+    <g transform="translate(510 147)">
+      <circle r="24" fill="#123bd1"/><text y="5" fill="#fff" text-anchor="middle">BE</text>
+      <text x="-47" y="-38" fill="#0a173f">REMORQUE</text>
+    </g>
+  </g>
+  <text x="26" y="37" fill="#123bd1" font-family="Montserrat,Arial,sans-serif" font-weight="700" font-size="11" letter-spacing="2">CHOISISSEZ VOTRE ROUTE</text>
+</svg>

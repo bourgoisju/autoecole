@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="car" viewBox="0 0 64 40">
+    <path d="M8 26h48l-4-10a5 5 0 0 0-5-3H18a5 5 0 0 0-5 3L8 26Zm0 0v7h6m42-7v7h-6M17 19h30M19 33h26" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="18" cy="33" r="4" fill="currentColor"/><circle cx="46" cy="33" r="4" fill="currentColor"/>
+  </symbol>
+  <symbol id="moto" viewBox="0 0 64 40">
+    <circle cx="12" cy="31" r="6" fill="none" stroke="currentColor" stroke-width="3"/>
+    <circle cx="52" cy="31" r="6" fill="none" stroke="currentColor" stroke-width="3"/>
+    <path d="m12 31 11-13 8 13h-19m19 0 9-13 12 13M23 18h18l5-6h7M28 12h8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="scooter" viewBox="0 0 64 40">
+    <circle cx="14" cy="32" r="5" fill="none" stroke="currentColor" stroke-width="3"/>
+    <circle cx="50" cy="32" r="5" fill="none" stroke="currentColor" stroke-width="3"/>
+    <path d="M14 32h25l9-17h-8m8 0 3-7h6M23 32l-4-15h11m-10 0-4-4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="trailer" viewBox="0 0 64 40">
+    <path d="M5 17h39v16H5zm39 12h12l4 4M10 22h15m4 0h9" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="17" cy="33" r="4" fill="currentColor"/><circle cx="37" cy="33" r="4" fill="currentColor"/>
+  </symbol>
+  <symbol id="gear" viewBox="0 0 64 40">
+    <path d="M32 5v8m0 14v8M10 20h12m20 0h12M16 9l8 6m16 10 8 6M48 9l-8 6M24 25l-8 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="32" cy="20" r="10" fill="none" stroke="currentColor" stroke-width="3"/>
+    <circle cx="32" cy="20" r="3" fill="currentColor"/>
+  </symbol>
+</svg>
