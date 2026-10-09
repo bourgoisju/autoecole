@@ -439,9 +439,18 @@ p { margin: 0 0 1rem; }
   background: var(--blue-soft); font-size: 1.6rem;
 }
 .audio-card__body { flex: 1; min-width: 0; }
-.audio-card__title { font-family: var(--ff-head); font-weight: 700; color: var(--navy); margin: 0 0 2px; }
-.audio-card__sub { color: var(--muted); font-size: .9rem; margin: 0 0 12px; }
-.audio-card audio { width: 100%; height: 40px; }
+.audio-card__eyebrow {
+  font-family: var(--ff-head); font-weight: 700; font-size: .72rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--blue); margin: 0 0 4px;
+}
+.audio-card__title { font-family: var(--ff-head); font-weight: 700; font-size: 1.12rem; color: var(--navy); margin: 0 0 3px; }
+.audio-card__sub { color: var(--muted); font-size: .9rem; line-height: 1.5; margin: 0 0 14px; }
+.audio-card__player { width: 100%; height: 40px; accent-color: var(--blue); color-scheme: light; }
+.audio-card__dl {
+  display: inline-block; margin-top: 10px;
+  font-family: var(--ff-head); font-weight: 600; font-size: .85rem; color: var(--blue);
+}
+.audio-card__dl:hover { color: var(--blue-dark); text-decoration: underline; }
 @media (max-width: 560px) {
   .audio-card { flex-direction: column; align-items: flex-start; text-align: left; }
 }
