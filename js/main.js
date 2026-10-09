@@ -29,6 +29,62 @@
   var yearEl = document.getElementById("year");
   if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
 
+  /* ---- Diaporama de présentation ---- */
+  var track = document.getElementById("deckTrack");
+  if (track) {
+    var deck = track.closest(".deck");
+    var slides = track.querySelectorAll(".deck__slide");
+    var prev = deck.querySelector('[data-deck="prev"]');
+    var next = deck.querySelector('[data-deck="next"]');
+    var indexEl = document.getElementById("deckIndex");
+    var dotsWrap = deck.querySelector(".deck__dots");
+    var current = 0;
+
+    var dots = Array.prototype.map.call(slides, function (slide, i) {
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "deck__dot";
+      dot.setAttribute("aria-label", "Diapositive " + (i + 1));
+      dot.addEventListener("click", function () { goTo(i); });
+      dotsWrap.appendChild(dot);
+      return dot;
+    });
+
+    function goTo(i) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({ left: i * track.clientWidth });
+    }
+
+    function update() {
+      var i = Math.round(track.scrollLeft / track.clientWidth);
+      current = i;
+      indexEl.textContent = i + 1;
+      prev.disabled = i === 0;
+      next.disabled = i === slides.length - 1;
+      dots.forEach(function (dot, d) {
+        dot.setAttribute("aria-current", d === i ? "true" : "false");
+      });
+    }
+
+    prev.addEventListener("click", function () { goTo(current - 1); });
+    next.addEventListener("click", function () { goTo(current + 1); });
+    track.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1); }
+      else if (e.key === "Home") { e.preventDefault(); goTo(0); }
+      else if (e.key === "End") { e.preventDefault(); goTo(slides.length - 1); }
+    });
+
+    var ticking = false;
+    track.addEventListener("scroll", function () {
+      if (ticking) { return; }
+      ticking = true;
+      window.requestAnimationFrame(function () { update(); ticking = false; });
+    }, { passive: true });
+    window.addEventListener("resize", function () { goTo(current); });
+    update();
+  }
+
   /* ---- Apparition au défilement ---- */
   var targets = document.querySelectorAll(
     ".card, .plus__list li, .price-card, .section__head, .award, .finance__note, .contact__dossier"
