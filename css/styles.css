@@ -217,9 +217,9 @@ p { margin: 0 0 1rem; }
 }
 .anim-title .text-mark { background-size: 0% 100%; }
 .anim-title.anim-play .text-mark { animation: hero-mark .9s cubic-bezier(.65, 0, .35, 1) forwards; animation-delay: var(--mark-delay, 1s); }
-/* Texte d'introduction qui suit le titre d'une section */
-.head-anim .section__intro { opacity: 0; transform: translateY(12px); }
-.head-anim.anim-play .section__intro { animation: hero-fade .8s ease forwards; animation-delay: var(--follow-delay, 1.1s); }
+/* Texte qui suit un titre animé (dans le même en-tête) */
+.head-anim .anim-follow { opacity: 0; transform: translateY(12px); }
+.head-anim.anim-play .anim-follow { animation: hero-fade .8s ease forwards; animation-delay: var(--follow-delay, 1.1s); }
 
 /* Accueil : paragraphe, compteur et types de permis après le titre */
 .hero--anim .hero__lead { opacity: 0; transform: translateY(12px); animation: hero-fade .8s ease forwards; animation-delay: var(--lead-delay, 1.1s); }

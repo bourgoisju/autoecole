@@ -59,8 +59,7 @@
 
   function playTitle(title) {
     title.classList.add("anim-play");
-    var head = title.closest(".section__head");
-    if (head) { head.classList.add("anim-play"); }
+    if (!title.closest(".hero")) { title.parentElement.classList.add("anim-play"); }
   }
 
   var animTitles = document.querySelectorAll("[data-anim-title]");
@@ -78,8 +77,8 @@
       var titleEnd = 120 + splitWords(title) * 65 + 450;
       title.style.setProperty("--mark-delay", titleEnd + "ms");
       title.classList.add("anim-title");
-      var head = title.closest(".section__head");
-      if (head) {
+      var head = title.parentElement;
+      if (head.querySelector(".anim-follow")) {
         head.style.setProperty("--follow-delay", (titleEnd + 150) + "ms");
         head.classList.add("head-anim");
       }
