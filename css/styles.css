@@ -149,30 +149,44 @@ p { margin: 0 0 1rem; }
 
 /* Voiture auto-école qui traverse le bas du hero */
 .hero__road {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 30px;
-  background: #e6ecfb; border-top: 1px solid var(--blue-line);
+  position: absolute; left: 0; right: 0; bottom: 0; height: 100px;
   pointer-events: none;
 }
-.hero__road::after {
-  content: ""; position: absolute; left: 0; right: 0; top: 14px; height: 2px;
-  background: repeating-linear-gradient(90deg, #fff 0 26px, transparent 26px 46px);
+.hero__road::before {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 13px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue-line) 12%, var(--blue-line) 88%, transparent);
 }
-.hero__car {
-  position: absolute; left: 0; bottom: 9px; width: 190px; height: auto;
-  animation: hero-drive 16s linear infinite;
+.hero__vehicle {
+  position: absolute; left: 0; bottom: 6px; width: 222px;
+  animation: hero-drive 13s cubic-bezier(.45, 0, .55, 1) infinite;
 }
-.hero__wheel { transform-box: fill-box; transform-origin: center; animation: wheel-spin .7s linear infinite; }
+.hero__car { display: block; width: 100%; height: auto; }
+/* Traînées de vitesse derrière la voiture */
+.hero__vehicle::before, .hero__vehicle::after {
+  content: ""; position: absolute; right: calc(100% - 20px); height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(18, 59, 209, .4));
+  animation: hero-trail .45s ease-in-out infinite alternate;
+}
+.hero__vehicle::before { bottom: 46%; width: 70px; }
+.hero__vehicle::after { bottom: 30%; width: 42px; animation-delay: .2s; }
+.hero__body { animation: hero-bob .5s ease-in-out infinite alternate; }
+.hero__beam { animation: hero-beam 2.6s ease-in-out infinite alternate; }
+.hero__wheel { transform-box: fill-box; transform-origin: center; animation: wheel-spin .5s linear infinite; }
 @keyframes hero-drive {
-  from { transform: translateX(-210px); }
-  to { transform: translateX(calc(100vw + 20px)); }
+  0% { transform: translateX(-280px); }
+  62%, 100% { transform: translateX(calc(100vw + 60px)); }
 }
+@keyframes hero-bob { to { transform: translateY(-1.2px); } }
+@keyframes hero-trail { from { opacity: .35; transform: scaleX(.7); transform-origin: right; } to { opacity: 1; transform: scaleX(1); transform-origin: right; } }
+@keyframes hero-beam { from { opacity: .55; } to { opacity: 1; } }
 @keyframes wheel-spin { to { transform: rotate(360deg); } }
 @media (max-width: 560px) {
-  .hero__car { width: 140px; animation-duration: 10s; }
+  .hero__vehicle { width: 164px; animation-duration: 9s; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero__car { animation: none; left: 6%; }
-  .hero__wheel { animation: none; }
+  .hero__vehicle { animation: none; left: 6%; }
+  .hero__vehicle::before, .hero__vehicle::after { display: none; }
+  .hero__body, .hero__beam, .hero__wheel { animation: none; }
 }
 .hero__inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(28px, 4vw, 56px); align-items: center; }
 .hero__content { max-width: 800px; padding-block: 12px; }
