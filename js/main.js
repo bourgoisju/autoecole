@@ -29,15 +29,13 @@
   var yearEl = document.getElementById("year");
   if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
 
-  /* ---- Animation d'entrée du titre d'accueil ---- */
-  var heroTitle = document.querySelector(".hero__title");
-  var heroMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (heroTitle && heroMotion) {
-    var hero = heroTitle.closest(".hero");
-    var wordIndex = 0;
+  /* ---- Titres animés mot à mot ---- */
+  var motionOK = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // Découpe chaque nœud texte du titre en mots animés, sans toucher aux balises
-    (function splitWords(node) {
+  // Découpe chaque nœud texte d'un élément en mots animés, sans toucher aux balises
+  function splitWords(root) {
+    var count = 0;
+    (function walk(node) {
       Array.prototype.slice.call(node.childNodes).forEach(function (child) {
         if (child.nodeType === 3) {
           var frag = document.createDocumentFragment();
@@ -45,47 +43,85 @@
             if (!part) { return; }
             if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
             var word = document.createElement("span");
-            word.className = "hero__word";
-            word.style.setProperty("--i", wordIndex++);
+            word.className = "anim-word";
+            word.style.setProperty("--i", count++);
             word.textContent = part;
             frag.appendChild(word);
           });
           node.replaceChild(frag, child);
         } else if (child.nodeType === 1) {
-          splitWords(child);
+          walk(child);
         }
       });
-    })(heroTitle);
+    })(root);
+    return count;
+  }
 
-    // Le surlignage puis le paragraphe suivent la fin du titre
-    var titleEnd = 120 + wordIndex * 65 + 450;
-    hero.style.setProperty("--mark-delay", titleEnd + "ms");
-    hero.style.setProperty("--lead-delay", (titleEnd + 150) + "ms");
-    hero.querySelectorAll(".hero__cat").forEach(function (cat, i) { cat.style.setProperty("--c", i); });
-    hero.classList.add("hero--anim");
+  function playTitle(title) {
+    title.classList.add("anim-play");
+    var head = title.closest(".section__head");
+    if (head) { head.classList.add("anim-play"); }
+  }
 
-    // Compteur « 30 ans » qui démarre avec le paragraphe
-    var counter = hero.querySelector(".hero__count");
-    if (counter) {
-      var target = parseInt(counter.getAttribute("data-to"), 10);
-      counter.textContent = "0";
-      setTimeout(function () {
-        var start = null, duration = 1200;
-        function step(ts) {
-          if (start === null) { start = ts; }
-          var p = Math.min((ts - start) / duration, 1);
-          counter.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-          if (p < 1) { window.requestAnimationFrame(step); }
+  var animTitles = document.querySelectorAll("[data-anim-title]");
+  if (motionOK) {
+    var titleObserver = "IntersectionObserver" in window ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          playTitle(entry.target);
+          titleObserver.unobserve(entry.target);
         }
-        window.requestAnimationFrame(step);
-      }, titleEnd + 350);
-    }
+      });
+    }, { threshold: 0.6 }) : null;
+
+    animTitles.forEach(function (title) {
+      var titleEnd = 120 + splitWords(title) * 65 + 450;
+      title.style.setProperty("--mark-delay", titleEnd + "ms");
+      title.classList.add("anim-title");
+      var head = title.closest(".section__head");
+      if (head) {
+        head.style.setProperty("--follow-delay", (titleEnd + 150) + "ms");
+        head.classList.add("head-anim");
+      }
+
+      var hero = title.closest(".hero");
+      if (hero) {
+        // Accueil : le titre se joue tout de suite, suivi du paragraphe
+        hero.style.setProperty("--lead-delay", (titleEnd + 150) + "ms");
+        hero.querySelectorAll(".hero__cat").forEach(function (cat, i) { cat.style.setProperty("--c", i); });
+        hero.classList.add("hero--anim");
+        playTitle(title);
+
+        // Compteur « 30 ans » qui démarre avec le paragraphe
+        var counter = hero.querySelector(".hero__count");
+        if (counter) {
+          var target = parseInt(counter.getAttribute("data-to"), 10);
+          counter.textContent = "0";
+          setTimeout(function () {
+            var start = null, duration = 1200;
+            function step(ts) {
+              if (start === null) { start = ts; }
+              var p = Math.min((ts - start) / duration, 1);
+              counter.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+              if (p < 1) { window.requestAnimationFrame(step); }
+            }
+            window.requestAnimationFrame(step);
+          }, titleEnd + 350);
+        }
+      } else if (titleObserver) {
+        titleObserver.observe(title);
+      } else {
+        playTitle(title);
+      }
+    });
   }
 
   /* ---- Apparition au défilement ---- */
   var targets = document.querySelectorAll(
     ".card, .plus__list li, .price-card, .section__head, .award, .finance__note, .contact__dossier"
   );
+  // Les en-têtes dont le titre est animé mot à mot ont leur propre entrée
+  targets = Array.prototype.filter.call(targets, function (el) { return !el.querySelector("[data-anim-title]"); });
   targets.forEach(function (el) { el.classList.add("reveal"); });
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
