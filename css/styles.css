@@ -147,7 +147,7 @@ p { margin: 0 0 1rem; }
   padding: clamp(40px, 5vw, 70px) 0 calc(clamp(40px, 5vw, 70px) + 64px);
 }
 
-/* Voiture auto-école qui traverse le bas du hero */
+/* Voiture et moto auto-école qui traversent le bas du hero, à tour de rôle */
 .hero__road {
   position: absolute; left: 0; right: 0; bottom: 0; height: 100px;
   pointer-events: none;
@@ -161,7 +161,7 @@ p { margin: 0 0 1rem; }
   animation: hero-drive 13s cubic-bezier(.45, 0, .55, 1) infinite;
 }
 .hero__car { display: block; width: 100%; height: auto; }
-/* Traînées de vitesse derrière la voiture */
+/* Traînées de vitesse derrière chaque véhicule */
 .hero__vehicle::before, .hero__vehicle::after {
   content: ""; position: absolute; right: calc(100% - 20px); height: 2px; border-radius: 2px;
   background: linear-gradient(90deg, transparent, rgba(18, 59, 209, .4));
@@ -176,15 +176,23 @@ p { margin: 0 0 1rem; }
   0% { transform: translateX(-280px); }
   62%, 100% { transform: translateX(calc(100vw + 60px)); }
 }
+.hero__vehicle--moto { width: 159px; animation-name: hero-ride; }
+.hero__vehicle--moto .hero__body { animation-duration: .4s; }
+@keyframes hero-ride {
+  0%, 52% { transform: translateX(-220px); }
+  92%, 100% { transform: translateX(calc(100vw + 40px)); }
+}
 @keyframes hero-bob { to { transform: translateY(-1.2px); } }
 @keyframes hero-trail { from { opacity: .35; transform: scaleX(.7); transform-origin: right; } to { opacity: 1; transform: scaleX(1); transform-origin: right; } }
 @keyframes hero-beam { from { opacity: .55; } to { opacity: 1; } }
 @keyframes wheel-spin { to { transform: rotate(360deg); } }
 @media (max-width: 560px) {
   .hero__vehicle { width: 164px; animation-duration: 9s; }
+  .hero__vehicle--moto { width: 117px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero__vehicle { animation: none; left: 6%; }
+  .hero__vehicle--moto { left: auto; right: 6%; }
   .hero__vehicle::before, .hero__vehicle::after { display: none; }
   .hero__body, .hero__beam, .hero__wheel { animation: none; }
 }
