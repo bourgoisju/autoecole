@@ -142,8 +142,37 @@ p { margin: 0 0 1rem; }
    HERO (accueil)
    ===================================================================== */
 .hero {
+  position: relative; overflow: hidden;
   background: #f4f7ff;
-  padding: clamp(40px, 5vw, 70px) 0;
+  padding: clamp(40px, 5vw, 70px) 0 calc(clamp(40px, 5vw, 70px) + 64px);
+}
+
+/* Voiture auto-école qui traverse le bas du hero */
+.hero__road {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 30px;
+  background: #e6ecfb; border-top: 1px solid var(--blue-line);
+  pointer-events: none;
+}
+.hero__road::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 14px; height: 2px;
+  background: repeating-linear-gradient(90deg, #fff 0 26px, transparent 26px 46px);
+}
+.hero__car {
+  position: absolute; left: 0; bottom: 14px; width: 150px; height: auto;
+  animation: hero-drive 16s linear infinite;
+}
+.hero__wheel { transform-box: fill-box; transform-origin: center; animation: wheel-spin .7s linear infinite; }
+@keyframes hero-drive {
+  from { transform: translateX(-170px); }
+  to { transform: translateX(calc(100vw + 20px)); }
+}
+@keyframes wheel-spin { to { transform: rotate(360deg); } }
+@media (max-width: 560px) {
+  .hero__car { width: 112px; animation-duration: 10s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__car { animation: none; left: 6%; }
+  .hero__wheel { animation: none; }
 }
 .hero__inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(28px, 4vw, 56px); align-items: center; }
 .hero__content { max-width: 800px; padding-block: 12px; }
