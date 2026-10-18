@@ -158,17 +158,17 @@ p { margin: 0 0 1rem; }
   background: repeating-linear-gradient(90deg, #fff 0 26px, transparent 26px 46px);
 }
 .hero__car {
-  position: absolute; left: 0; bottom: 14px; width: 150px; height: auto;
+  position: absolute; left: 0; bottom: 9px; width: 190px; height: auto;
   animation: hero-drive 16s linear infinite;
 }
 .hero__wheel { transform-box: fill-box; transform-origin: center; animation: wheel-spin .7s linear infinite; }
 @keyframes hero-drive {
-  from { transform: translateX(-170px); }
+  from { transform: translateX(-210px); }
   to { transform: translateX(calc(100vw + 20px)); }
 }
 @keyframes wheel-spin { to { transform: rotate(360deg); } }
 @media (max-width: 560px) {
-  .hero__car { width: 112px; animation-duration: 10s; }
+  .hero__car { width: 140px; animation-duration: 10s; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero__car { animation: none; left: 6%; }
