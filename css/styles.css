@@ -29,7 +29,7 @@
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+html { scroll-behavior: smooth; scroll-padding-top: 104px; }
 body {
   margin: 0;
   font-family: var(--ff-body);
@@ -116,8 +116,8 @@ p { margin: 0 0 1rem; }
   backdrop-filter: saturate(140%) blur(8px);
   border-bottom: 1px solid var(--blue-line);
 }
-.header__inner { display: flex; align-items: center; justify-content: space-between; min-height: 72px; gap: 16px; }
-.brand__logo { height: 64px; width: auto; }
+.header__inner { display: flex; align-items: center; justify-content: space-between; min-height: 88px; gap: 16px; }
+.brand__logo { height: 76px; width: auto; }
 .nav { display: flex; align-items: center; gap: clamp(10px, 2vw, 26px); }
 .nav__link {
   font-family: var(--ff-head); font-weight: 600; font-size: .96rem; color: var(--navy);
@@ -371,7 +371,7 @@ p { margin: 0 0 1rem; }
   .road-divider--fleet .road-divider__item span { display: none; }
   .nav-toggle { display: flex; }
   .nav {
-    position: fixed; inset: 72px 0 auto 0;
+    position: fixed; inset: 88px 0 auto 0;
     flex-direction: column; align-items: stretch; gap: 0;
     background: #fff; border-bottom: 1px solid var(--blue-line);
     padding: 10px var(--edge) 20px; box-shadow: var(--shadow);
