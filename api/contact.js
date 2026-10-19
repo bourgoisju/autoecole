@@ -16,7 +16,6 @@ var DEFAULT_FROM = "Site La Tour de Mare <onboarding@resend.dev>";
 
 var TYPES = {
   renseignement: "Demande de renseignement",
-  inscription: "Pré-inscription",
   rappel: "Demande de rappel"
 };
 var FORMATIONS = [
@@ -40,20 +39,6 @@ var CALLBACKS = ["Mardi – vendredi, 10h – 12h", "Mardi – vendredi, 15h –
 
 function pick(value, allowed) {
   return allowed.indexOf(value) === -1 ? "" : value;
-}
-
-function formatDate(iso) {
-  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  return m ? m[3] + "/" + m[2] + "/" + m[1] : "";
-}
-
-function ageFrom(iso) {
-  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  if (!m) { return null; }
-  var now = new Date();
-  var age = now.getFullYear() - Number(m[1]);
-  if (now.getMonth() + 1 < Number(m[2]) || (now.getMonth() + 1 === Number(m[2]) && now.getDate() < Number(m[3]))) { age--; }
-  return age >= 10 && age <= 100 ? age : null;
 }
 
 function clean(value, max) {
@@ -103,8 +88,6 @@ module.exports = async function (req, res) {
   var gearbox = pick(clean(body.gearbox, 40), GEARBOXES);
   var funding = pick(clean(body.funding, 80), FUNDINGS);
   var callback = pick(clean(body.callback, 60), CALLBACKS);
-  var birthdate = clean(body.birthdate, 10);
-  var age = ageFrom(birthdate);
   var message = clean(body.message, 4000);
   var consent = body.consent === true || body.consent === "on" || body.consent === "true";
 
@@ -114,7 +97,7 @@ module.exports = async function (req, res) {
   if ((type !== "rappel" || email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return reply(req, res, 400, { ok: false, error: "L'adresse e-mail ne semble pas valide." });
   }
-  if (type !== "renseignement" && !phone) {
+  if (type === "rappel" && !phone) {
     return reply(req, res, 400, { ok: false, error: "Merci d'indiquer un numéro de téléphone." });
   }
   if (phone && !/^[0-9+().\s-]{6,30}$/.test(phone)) {
@@ -135,7 +118,6 @@ module.exports = async function (req, res) {
     ["Formation", formation]
   ];
   if (gearbox) { rows.push(["Boîte", gearbox]); }
-  if (birthdate && formatDate(birthdate)) { rows.push(["Date de naissance", formatDate(birthdate) + (age !== null ? " (" + age + " ans)" : "")]); }
   if (funding) { rows.push(["Financement", funding]); }
   if (callback) { rows.push(["Rappel souhaité", callback]); }
 
@@ -153,7 +135,7 @@ module.exports = async function (req, res) {
     "</p></div>";
   var text = rows.map(function (r) { return r[0] + " : " + r[1]; }).join("\n") + (message ? "\n\n" + message : "");
 
-  var subjectTag = { renseignement: "Renseignement", inscription: "Pré-inscription", rappel: "À rappeler" }[type];
+  var subjectTag = { renseignement: "Renseignement", rappel: "À rappeler" }[type];
   var payload = {
     from: process.env.CONTACT_FROM || DEFAULT_FROM,
     to: [process.env.CONTACT_TO || DEFAULT_TO],

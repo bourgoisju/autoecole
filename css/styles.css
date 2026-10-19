@@ -360,12 +360,12 @@ p { margin: 0 0 1rem; }
   outline: none; background: #fff; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(18, 59, 209, .15);
 }
 .field.is-invalid input, .field.is-invalid textarea { border-color: #d14343; background: #fff7f7; }
-.field[hidden], .choice-group[hidden], .contact-form__tip[hidden] { display: none; }
+.field[hidden], .choice-group[hidden] { display: none; }
 
 /* Choix du type de demande (cartes) et options en pastilles */
 .choice-group { border: 0; padding: 0; margin: 0 0 22px; min-width: 0; }
 .choice-group legend { padding: 0; margin-bottom: 10px; }
-.choice-group__options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.choice-group__options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .choice { position: relative; cursor: pointer; }
 .choice input, .pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .choice__box {
@@ -390,8 +390,6 @@ p { margin: 0 0 1rem; }
 .pill input:checked + span { background: var(--blue); border-color: var(--blue); color: #fff; }
 .field select.is-placeholder { color: var(--muted); }
 .field.is-invalid select { border-color: #d14343; background: #fff7f7; }
-.contact-form__tip { margin: 18px 0 0; padding: 12px 16px; border-radius: var(--radius-sm); background: var(--blue-soft); color: var(--navy); font-size: .9rem; }
-.contact-form__tip a { font-weight: 700; }
 
 .contact-form__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .contact-form__consent { display: flex; gap: 10px; align-items: flex-start; margin: 20px 0 22px; font-size: .9rem; color: var(--muted); cursor: pointer; }
