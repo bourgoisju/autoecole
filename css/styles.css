@@ -29,7 +29,7 @@
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html { scroll-behavior: smooth; scroll-padding-top: 92px; }
 body {
   margin: 0;
   font-family: var(--ff-body);
@@ -119,11 +119,11 @@ p { margin: 0 0 1rem; }
 }
 /* En-tête compact une fois la page défilée */
 .site-header.is-compact { background: rgba(255,255,255,.97); box-shadow: 0 6px 20px rgba(10, 23, 63, .08); }
-.header__inner { display: flex; align-items: center; justify-content: space-between; min-height: 88px; gap: 16px; transition: min-height .25s ease; }
+.header__inner { display: flex; align-items: center; justify-content: space-between; min-height: 100px; gap: 16px; transition: min-height .25s ease; }
 .brand { flex: none; display: block; }
-.brand__logo { height: 76px; width: auto; transition: height .25s ease; }
-.site-header.is-compact .header__inner { min-height: 66px; }
-.site-header.is-compact .brand__logo { height: 54px; }
+.brand__logo { height: 88px; width: auto; transition: height .25s ease; }
+.site-header.is-compact .header__inner { min-height: 74px; }
+.site-header.is-compact .brand__logo { height: 62px; }
 .nav { display: flex; align-items: center; gap: clamp(14px, 1.8vw, 28px); }
 .nav__link {
   font-family: var(--ff-head); font-weight: 600; font-size: .96rem; color: var(--navy);
@@ -228,6 +228,8 @@ p { margin: 0 0 1rem; }
 @keyframes hero-beam { from { opacity: .55; } to { opacity: 1; } }
 @keyframes wheel-spin { to { transform: rotate(360deg); } }
 @media (max-width: 560px) {
+  .brand__logo { height: 80px; }
+  .site-header.is-compact .brand__logo { height: 58px; }
   .hero__vehicle { width: 164px; animation-duration: 9s; }
   .hero__vehicle--moto { width: 117px; }
 }
