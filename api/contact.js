@@ -1,18 +1,26 @@
 /* =====================================================================
    Auto-école La Tour de Mare — formulaire de contact
-   Fonction Vercel : reçoit le formulaire et envoie un e-mail via Resend.
-   Aucune donnée n'est stockée.
+   Fonction Vercel : reçoit le formulaire et envoie deux e-mails via Resend :
+   la notification à l'auto-école et un accusé de réception au visiteur.
+   Aucune donnée n'est stockée. Modèles des e-mails : api/_emails.js
 
    Variables d'environnement (Vercel > Settings > Environment Variables) :
    - RESEND_API_KEY  (obligatoire) clé API Resend
-   - CONTACT_TO      (facultatif)  destinataire, par défaut autoecoletourdemare@gmail.com
+   - CONTACT_TO      (facultatif)  destinataire des notifications, par défaut bourgois.ju@gmail.com
+   - CONTACT_REPLY_TO (facultatif) adresse de réponse de l'accusé de réception,
+                                   par défaut autoecoletourdemare@gmail.com
+   - SITE_URL        (facultatif)  adresse du site (logo, liens), par défaut https://autoecole-smoky.vercel.app
    - CONTACT_FROM    (facultatif)  expéditeur, par défaut onboarding@resend.dev
                                    (à remplacer par une adresse de votre domaine
                                    une fois celui-ci vérifié dans Resend)
    ===================================================================== */
 
-var DEFAULT_TO = "autoecoletourdemare@gmail.com";
-var DEFAULT_FROM = "Site La Tour de Mare <onboarding@resend.dev>";
+var emails = require("./_emails");
+
+var DEFAULT_TO = "bourgois.ju@gmail.com";
+var DEFAULT_FROM = "Auto-école La Tour de Mare <onboarding@resend.dev>";
+var DEFAULT_REPLY_TO = "autoecoletourdemare@gmail.com";
+var DEFAULT_SITE = "https://autoecole-smoky.vercel.app";
 
 var TYPES = {
   renseignement: "Demande de renseignement",
@@ -45,10 +53,22 @@ function clean(value, max) {
   return String(value == null ? "" : value).replace(/\r\n?/g, "\n").trim().slice(0, max);
 }
 
-function escapeHtml(text) {
-  return text.replace(/[&<>"']/g, function (c) {
-    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-  });
+async function sendMail(apiKey, mail) {
+  try {
+    var resp = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
+      body: JSON.stringify(mail)
+    });
+    if (!resp.ok) {
+      console.error("Resend a refusé l'envoi à " + mail.to.join(", "), resp.status, await resp.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("Erreur réseau Resend", err);
+    return false;
+  }
 }
 
 function reply(req, res, status, payload) {
@@ -110,54 +130,48 @@ module.exports = async function (req, res) {
     return reply(req, res, 500, { ok: false, error: "Le formulaire n'est pas encore configuré. Appelez-nous au 04 94 52 91 13." });
   }
 
-  var rows = [
-    ["Demande", TYPES[type]],
-    ["Nom", name],
-    ["E-mail", email || "—"],
-    ["Téléphone", phone || "—"],
-    ["Formation", formation]
-  ];
-  if (gearbox) { rows.push(["Boîte", gearbox]); }
-  if (funding) { rows.push(["Financement", funding]); }
-  if (callback) { rows.push(["Rappel souhaité", callback]); }
-
-  var html =
-    '<div style="font-family:Arial,sans-serif;color:#16213d;max-width:560px">' +
-    '<h2 style="color:#0a173f;margin:0 0 16px">' + TYPES[type] + " depuis le site</h2>" +
-    '<table style="border-collapse:collapse;margin-bottom:16px">' +
-    rows.map(function (r) {
-      return '<tr><td style="padding:4px 16px 4px 0;color:#586079">' + r[0] + '</td><td style="padding:4px 0"><strong>' + escapeHtml(r[1]) + "</strong></td></tr>";
-    }).join("") +
-    "</table>" +
-    (message ? '<p style="white-space:pre-wrap;background:#f5f7fd;border:1px solid #d3dcf6;border-radius:8px;padding:14px;margin:0">' + escapeHtml(message) + "</p>" : "") +
-    '<p style="color:#586079;font-size:12px;margin-top:16px">' +
-    (email ? "Répondez directement à cet e-mail pour écrire à " + escapeHtml(name) + "." : "Pas d'e-mail fourni : rappelez " + escapeHtml(name) + " au " + escapeHtml(phone) + ".") +
-    "</p></div>";
-  var text = rows.map(function (r) { return r[0] + " : " + r[1]; }).join("\n") + (message ? "\n\n" + message : "");
-
-  var subjectTag = { renseignement: "Renseignement", rappel: "À rappeler" }[type];
-  var payload = {
-    from: process.env.CONTACT_FROM || DEFAULT_FROM,
-    to: [process.env.CONTACT_TO || DEFAULT_TO],
-    subject: subjectTag + " — " + name + " (" + formation + ")",
-    html: html,
-    text: text
+  var data = {
+    type: type,
+    name: name,
+    email: email,
+    phone: phone,
+    formation: formation,
+    gearbox: gearbox,
+    funding: funding,
+    callback: callback,
+    message: message,
+    siteUrl: process.env.SITE_URL || DEFAULT_SITE,
+    receivedAt: new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris", dateStyle: "full", timeStyle: "short" })
   };
-  if (email) { payload.reply_to = email; }
+  var from = process.env.CONTACT_FROM || DEFAULT_FROM;
 
-  try {
-    var resp = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    if (!resp.ok) {
-      console.error("Resend a refusé l'envoi", resp.status, await resp.text());
-      return reply(req, res, 502, { ok: false, error: "L'envoi a échoué. Réessayez ou appelez-nous au 04 94 52 91 13." });
-    }
-  } catch (err) {
-    console.error("Erreur réseau Resend", err);
+  // 1. Notification à l'auto-école (indispensable)
+  var notice = emails.notification(data);
+  var noticeMail = {
+    from: from,
+    to: [process.env.CONTACT_TO || DEFAULT_TO],
+    subject: notice.subject,
+    html: notice.html,
+    text: notice.text
+  };
+  if (email) { noticeMail.reply_to = email; }
+
+  var sent = await sendMail(apiKey, noticeMail);
+  if (!sent) {
     return reply(req, res, 502, { ok: false, error: "L'envoi a échoué. Réessayez ou appelez-nous au 04 94 52 91 13." });
+  }
+
+  // 2. Accusé de réception au visiteur (si e-mail fourni ; un échec ne bloque pas la demande)
+  if (email) {
+    var receipt = emails.confirmation(data);
+    await sendMail(apiKey, {
+      from: from,
+      to: [email],
+      reply_to: process.env.CONTACT_REPLY_TO || DEFAULT_REPLY_TO,
+      subject: receipt.subject,
+      html: receipt.html,
+      text: receipt.text
+    });
   }
 
   return reply(req, res, 200, { ok: true });
