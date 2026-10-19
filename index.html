@@ -350,7 +350,7 @@
           <a href="tel:+33494529113" class="btn btn--primary">Appeler l'auto-école</a>
         </div>
 
-        <div class="contact__dossier">
+        <div class="contact__dossier" id="pieces">
           <h3>Pièces à fournir pour l'inscription</h3>
           <ul class="checks">
             <li>4 photos d'identité aux normes préfectorales (format e-photo)</li>
@@ -372,8 +372,26 @@
         <form class="contact-form" action="/api/contact" method="post" novalidate>
           <div class="contact-form__head">
             <h3>Écrivez-nous</h3>
-            <p>Une question sur une formation, un tarif ou votre inscription ? Nous vous répondons rapidement.</p>
+            <p>Renseignement, pré-inscription ou rappel : dites-nous ce qu'il vous faut, nous revenons vers vous rapidement.</p>
           </div>
+
+          <fieldset class="choice-group">
+            <legend class="field__label">Votre demande <abbr title="obligatoire">*</abbr></legend>
+            <div class="choice-group__options">
+              <label class="choice">
+                <input type="radio" name="type" value="renseignement" checked />
+                <span class="choice__box"><strong>Un renseignement</strong><small>Tarifs, formations, délais</small></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="type" value="inscription" />
+                <span class="choice__box"><strong>Me pré-inscrire</strong><small>Réserver ma place</small></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="type" value="rappel" />
+                <span class="choice__box"><strong>Être rappelé(e)</strong><small>Aux horaires du bureau</small></span>
+              </label>
+            </div>
+          </fieldset>
 
           <div class="contact-form__grid">
             <label class="field">
@@ -381,16 +399,8 @@
               <input type="text" name="name" autocomplete="name" maxlength="120" required />
             </label>
             <label class="field">
-              <span class="field__label">E-mail <abbr title="obligatoire">*</abbr></span>
-              <input type="email" name="email" autocomplete="email" maxlength="160" required />
-            </label>
-            <label class="field">
-              <span class="field__label">Téléphone</span>
-              <input type="tel" name="phone" autocomplete="tel" maxlength="30" />
-            </label>
-            <label class="field">
-              <span class="field__label">Formation souhaitée</span>
-              <select name="formation">
+              <span class="field__label">Formation <abbr title="obligatoire">*</abbr></span>
+              <select name="formation" required>
                 <option value="">— Choisir —</option>
                 <option>Permis B — voiture</option>
                 <option>Conduite accompagnée (AAC)</option>
@@ -398,14 +408,66 @@
                 <option>Permis AM (cyclomoteur, voiturette)</option>
                 <option>Remorque (BE / B96)</option>
                 <option>Formations rapides</option>
-                <option>Autre demande</option>
+                <option>Je ne sais pas encore</option>
               </select>
             </label>
+            <label class="field">
+              <span class="field__label">E-mail <abbr title="obligatoire" data-required-for="renseignement inscription">*</abbr></span>
+              <input type="email" name="email" autocomplete="email" maxlength="160" data-required-for="renseignement inscription" />
+            </label>
+            <label class="field">
+              <span class="field__label">Téléphone <abbr title="obligatoire" data-required-for="inscription rappel">*</abbr></span>
+              <input type="tel" name="phone" autocomplete="tel" maxlength="30" data-required-for="inscription rappel" />
+            </label>
+
+            <fieldset class="choice-group field--full" data-show-for-formation="Permis B — voiture|Conduite accompagnée (AAC)" hidden>
+              <legend class="field__label">Boîte de vitesses</legend>
+              <div class="choice-group__options choice-group__options--pills">
+                <label class="pill"><input type="radio" name="gearbox" value="Manuelle" /><span>Manuelle</span></label>
+                <label class="pill"><input type="radio" name="gearbox" value="Automatique" /><span>Automatique</span></label>
+                <label class="pill"><input type="radio" name="gearbox" value="Je ne sais pas" /><span>Je ne sais pas</span></label>
+              </div>
+            </fieldset>
+
+            <label class="field" data-show-for="inscription" hidden>
+              <span class="field__label">Date de naissance <abbr title="obligatoire">*</abbr></span>
+              <input type="date" name="birthdate" autocomplete="bday" data-required-for="inscription" />
+            </label>
+            <label class="field" data-show-for="renseignement inscription">
+              <span class="field__label">Financement envisagé</span>
+              <select name="funding">
+                <option value="">— Facultatif —</option>
+                <option>Paiement personnel (en plusieurs fois)</option>
+                <option>Permis à 1 € par jour</option>
+                <option>CPF (Compte Personnel de Formation)</option>
+                <option>Prise en charge professionnelle</option>
+                <option>Je souhaite être conseillé(e)</option>
+              </select>
+            </label>
+            <label class="field" data-show-for="rappel" hidden>
+              <span class="field__label">Quand vous rappeler ? <abbr title="obligatoire">*</abbr></span>
+              <select name="callback" data-required-for="rappel">
+                <option value="">— Choisir un créneau —</option>
+                <option>Mardi – vendredi, 10h – 12h</option>
+                <option>Mardi – vendredi, 15h – 19h</option>
+                <option>Samedi, 10h – 12h</option>
+                <option>Peu importe</option>
+              </select>
+            </label>
+
             <label class="field field--full">
-              <span class="field__label">Votre message <abbr title="obligatoire">*</abbr></span>
-              <textarea name="message" rows="5" maxlength="4000" required></textarea>
+              <span class="field__label">Votre message <abbr title="obligatoire" data-required-for="renseignement">*</abbr></span>
+              <textarea name="message" rows="4" maxlength="4000" data-required-for="renseignement"
+                        data-placeholder-renseignement="Votre question : tarifs, délais, déroulement de la formation…"
+                        data-placeholder-inscription="Vos disponibilités, une précision sur votre projet… (facultatif)"
+                        data-placeholder-rappel="L'objet de votre appel (facultatif)"
+                        placeholder="Votre question : tarifs, délais, déroulement de la formation…"></textarea>
             </label>
           </div>
+
+          <p class="contact-form__tip" data-show-for="inscription" hidden>
+            Pour finaliser votre inscription, préparez les <a href="#pieces">pièces à fournir</a> : photos e-photo, pièce d'identité, justificatif de domicile, ASSR…
+          </p>
 
           <!-- Champ piège pour les robots, invisible pour les visiteurs -->
           <div class="contact-form__trap" aria-hidden="true">
@@ -418,7 +480,7 @@
           </label>
 
           <div class="contact-form__foot">
-            <button type="submit" class="btn btn--primary">Envoyer le message</button>
+            <button type="submit" class="btn btn--primary">Envoyer ma demande</button>
             <p class="contact-form__status" role="status" aria-live="polite"></p>
           </div>
         </form>

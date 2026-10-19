@@ -120,21 +120,60 @@
   if (contactForm) {
     var statusEl = contactForm.querySelector(".contact-form__status");
     var submitBtn = contactForm.querySelector('button[type="submit"]');
+    var submitLabel = submitBtn.textContent;
+    var messageEl = contactForm.querySelector('[name="message"]');
 
     function setStatus(text, ok) {
       statusEl.textContent = text;
       statusEl.className = "contact-form__status " + (ok ? "is-ok" : "is-error");
     }
 
+    function currentType() {
+      var checked = contactForm.querySelector('[name="type"]:checked');
+      return checked ? checked.value : "renseignement";
+    }
+
+    // Affiche les champs utiles et ajuste les champs obligatoires selon les choix
+    function updateFields() {
+      var type = currentType();
+      var formation = contactForm.querySelector('[name="formation"]').value;
+
+      contactForm.querySelectorAll("[data-show-for]").forEach(function (el) {
+        var show = el.getAttribute("data-show-for").split(" ").indexOf(type) !== -1;
+        el.hidden = !show;
+        el.querySelectorAll("input, select, textarea").forEach(function (input) { input.disabled = !show; });
+      });
+      contactForm.querySelectorAll("[data-show-for-formation]").forEach(function (el) {
+        var show = el.getAttribute("data-show-for-formation").split("|").indexOf(formation) !== -1;
+        el.hidden = !show;
+        el.querySelectorAll("input").forEach(function (input) { input.disabled = !show; });
+      });
+      contactForm.querySelectorAll("input[data-required-for], select[data-required-for], textarea[data-required-for]").forEach(function (input) {
+        input.required = input.getAttribute("data-required-for").split(" ").indexOf(type) !== -1;
+      });
+      contactForm.querySelectorAll("abbr[data-required-for]").forEach(function (mark) {
+        mark.hidden = mark.getAttribute("data-required-for").split(" ").indexOf(type) === -1;
+      });
+      var placeholder = messageEl.getAttribute("data-placeholder-" + type);
+      if (placeholder) { messageEl.placeholder = placeholder; }
+      contactForm.querySelectorAll("select").forEach(function (select) {
+        select.classList.toggle("is-placeholder", !select.value);
+      });
+    }
+
+    contactForm.addEventListener("change", updateFields);
+    updateFields();
+
     // Retour d'un envoi sans JavaScript (redirection de la fonction)
     var result = new URLSearchParams(window.location.search).get("contact");
-    if (result === "ok") { setStatus("Merci, votre message a bien été envoyé. Nous vous répondons rapidement.", true); }
+    if (result === "ok") { setStatus("Merci, votre demande a bien été envoyée. Nous revenons vers vous rapidement.", true); }
     else if (result === "erreur") { setStatus("L'envoi a échoué. Vérifiez le formulaire ou appelez-nous au 04 94 52 91 13.", false); }
 
     contactForm.addEventListener("submit", function (e) {
       e.preventDefault();
       var invalid = [];
       contactForm.querySelectorAll("[required]").forEach(function (input) {
+        if (input.disabled) { return; }
         var wrap = input.closest(".field, .contact-form__consent");
         var bad = input.type === "checkbox" ? !input.checked : !input.checkValidity() || !input.value.trim();
         if (wrap) { wrap.classList.toggle("is-invalid", bad); }
@@ -165,15 +204,19 @@
           });
         })
         .then(function () {
+          var type = currentType();
           contactForm.reset();
-          setStatus("Merci, votre message a bien été envoyé. Nous vous répondons rapidement.", true);
+          updateFields();
+          setStatus(type === "rappel"
+            ? "Merci, nous vous rappelons sur le créneau choisi."
+            : "Merci, votre demande a bien été envoyée. Nous revenons vers vous rapidement.", true);
         })
         .catch(function (err) {
           setStatus(err.message, false);
         })
         .then(function () {
           submitBtn.disabled = false;
-          submitBtn.textContent = "Envoyer le message";
+          submitBtn.textContent = submitLabel;
         });
     });
 

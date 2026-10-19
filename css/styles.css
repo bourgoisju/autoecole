@@ -360,6 +360,39 @@ p { margin: 0 0 1rem; }
   outline: none; background: #fff; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(18, 59, 209, .15);
 }
 .field.is-invalid input, .field.is-invalid textarea { border-color: #d14343; background: #fff7f7; }
+.field[hidden], .choice-group[hidden], .contact-form__tip[hidden] { display: none; }
+
+/* Choix du type de demande (cartes) et options en pastilles */
+.choice-group { border: 0; padding: 0; margin: 0 0 22px; min-width: 0; }
+.choice-group legend { padding: 0; margin-bottom: 10px; }
+.choice-group__options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.choice { position: relative; cursor: pointer; }
+.choice input, .pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.choice__box {
+  display: flex; flex-direction: column; gap: 2px; height: 100%;
+  padding: 14px 16px; border: 1.5px solid var(--blue-line); border-radius: var(--radius-sm); background: var(--surface);
+  transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.choice__box strong { font-family: var(--ff-head); color: var(--navy); font-size: .95rem; }
+.choice__box small { color: var(--muted); font-size: .82rem; }
+.choice:hover .choice__box { border-color: #9fb0e0; }
+.choice input:checked + .choice__box { border-color: var(--blue); background: #fff; box-shadow: 0 0 0 3px rgba(18, 59, 209, .12); }
+.choice input:checked + .choice__box strong { color: var(--blue); }
+.choice input:focus-visible + .choice__box, .pill input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: 2px; }
+.contact-form__grid .choice-group { margin: 0; }
+.choice-group__options--pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill span {
+  display: inline-block; padding: 8px 16px; border: 1.5px solid var(--blue-line); border-radius: 999px;
+  background: var(--surface); font-family: var(--ff-head); font-weight: 600; font-size: .88rem; color: var(--navy); cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, color .15s ease;
+}
+.pill:hover span { border-color: #9fb0e0; }
+.pill input:checked + span { background: var(--blue); border-color: var(--blue); color: #fff; }
+.field select.is-placeholder { color: var(--muted); }
+.field.is-invalid select { border-color: #d14343; background: #fff7f7; }
+.contact-form__tip { margin: 18px 0 0; padding: 12px 16px; border-radius: var(--radius-sm); background: var(--blue-soft); color: var(--navy); font-size: .9rem; }
+.contact-form__tip a { font-weight: 700; }
+
 .contact-form__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .contact-form__consent { display: flex; gap: 10px; align-items: flex-start; margin: 20px 0 22px; font-size: .9rem; color: var(--muted); cursor: pointer; }
 .contact-form__consent input { margin-top: 3px; width: 18px; height: 18px; flex: none; accent-color: var(--blue); }
@@ -371,6 +404,7 @@ p { margin: 0 0 1rem; }
 .contact-form__status.is-error { color: #b42323; }
 @media (max-width: 560px) {
   .contact-form__grid { grid-template-columns: 1fr; }
+  .choice-group__options { grid-template-columns: 1fr; }
 }
 
 .hours { margin-bottom: 40px; }

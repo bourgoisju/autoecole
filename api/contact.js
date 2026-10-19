@@ -14,6 +14,11 @@
 var DEFAULT_TO = "autoecoletourdemare@gmail.com";
 var DEFAULT_FROM = "Site La Tour de Mare <onboarding@resend.dev>";
 
+var TYPES = {
+  renseignement: "Demande de renseignement",
+  inscription: "Pré-inscription",
+  rappel: "Demande de rappel"
+};
 var FORMATIONS = [
   "Permis B — voiture",
   "Conduite accompagnée (AAC)",
@@ -21,8 +26,35 @@ var FORMATIONS = [
   "Permis AM (cyclomoteur, voiturette)",
   "Remorque (BE / B96)",
   "Formations rapides",
-  "Autre demande"
+  "Je ne sais pas encore"
 ];
+var GEARBOXES = ["Manuelle", "Automatique", "Je ne sais pas"];
+var FUNDINGS = [
+  "Paiement personnel (en plusieurs fois)",
+  "Permis à 1 € par jour",
+  "CPF (Compte Personnel de Formation)",
+  "Prise en charge professionnelle",
+  "Je souhaite être conseillé(e)"
+];
+var CALLBACKS = ["Mardi – vendredi, 10h – 12h", "Mardi – vendredi, 15h – 19h", "Samedi, 10h – 12h", "Peu importe"];
+
+function pick(value, allowed) {
+  return allowed.indexOf(value) === -1 ? "" : value;
+}
+
+function formatDate(iso) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  return m ? m[3] + "/" + m[2] + "/" + m[1] : "";
+}
+
+function ageFrom(iso) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) { return null; }
+  var now = new Date();
+  var age = now.getFullYear() - Number(m[1]);
+  if (now.getMonth() + 1 < Number(m[2]) || (now.getMonth() + 1 === Number(m[2]) && now.getDate() < Number(m[3]))) { age--; }
+  return age >= 10 && age <= 100 ? age : null;
+}
 
 function clean(value, max) {
   return String(value == null ? "" : value).replace(/\r\n?/g, "\n").trim().slice(0, max);
@@ -63,20 +95,27 @@ module.exports = async function (req, res) {
     return reply(req, res, 200, { ok: true });
   }
 
+  var type = Object.prototype.hasOwnProperty.call(TYPES, body.type) ? body.type : "renseignement";
   var name = clean(body.name, 120);
   var email = clean(body.email, 160);
   var phone = clean(body.phone, 30);
-  var formation = clean(body.formation, 80);
+  var formation = pick(clean(body.formation, 80), FORMATIONS);
+  var gearbox = pick(clean(body.gearbox, 40), GEARBOXES);
+  var funding = pick(clean(body.funding, 80), FUNDINGS);
+  var callback = pick(clean(body.callback, 60), CALLBACKS);
+  var birthdate = clean(body.birthdate, 10);
+  var age = ageFrom(birthdate);
   var message = clean(body.message, 4000);
   var consent = body.consent === true || body.consent === "on" || body.consent === "true";
 
-  if (FORMATIONS.indexOf(formation) === -1) { formation = ""; }
-
-  if (!name || !message || !consent) {
+  if (!name || !formation || !consent || (type === "renseignement" && !message)) {
     return reply(req, res, 400, { ok: false, error: "Merci de remplir les champs obligatoires." });
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if ((type !== "rappel" || email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return reply(req, res, 400, { ok: false, error: "L'adresse e-mail ne semble pas valide." });
+  }
+  if (type !== "renseignement" && !phone) {
+    return reply(req, res, 400, { ok: false, error: "Merci d'indiquer un numéro de téléphone." });
   }
   if (phone && !/^[0-9+().\s-]{6,30}$/.test(phone)) {
     return reply(req, res, 400, { ok: false, error: "Le numéro de téléphone ne semble pas valide." });
@@ -89,36 +128,46 @@ module.exports = async function (req, res) {
   }
 
   var rows = [
+    ["Demande", TYPES[type]],
     ["Nom", name],
-    ["E-mail", email],
+    ["E-mail", email || "—"],
     ["Téléphone", phone || "—"],
-    ["Formation", formation || "—"]
+    ["Formation", formation]
   ];
+  if (gearbox) { rows.push(["Boîte", gearbox]); }
+  if (birthdate && formatDate(birthdate)) { rows.push(["Date de naissance", formatDate(birthdate) + (age !== null ? " (" + age + " ans)" : "")]); }
+  if (funding) { rows.push(["Financement", funding]); }
+  if (callback) { rows.push(["Rappel souhaité", callback]); }
+
   var html =
     '<div style="font-family:Arial,sans-serif;color:#16213d;max-width:560px">' +
-    '<h2 style="color:#0a173f;margin:0 0 16px">Nouveau message depuis le site</h2>' +
+    '<h2 style="color:#0a173f;margin:0 0 16px">' + TYPES[type] + " depuis le site</h2>" +
     '<table style="border-collapse:collapse;margin-bottom:16px">' +
     rows.map(function (r) {
       return '<tr><td style="padding:4px 16px 4px 0;color:#586079">' + r[0] + '</td><td style="padding:4px 0"><strong>' + escapeHtml(r[1]) + "</strong></td></tr>";
     }).join("") +
     "</table>" +
-    '<p style="white-space:pre-wrap;background:#f5f7fd;border:1px solid #d3dcf6;border-radius:8px;padding:14px;margin:0">' + escapeHtml(message) + "</p>" +
-    '<p style="color:#586079;font-size:12px;margin-top:16px">Répondez directement à cet e-mail pour écrire à ' + escapeHtml(name) + ".</p>" +
-    "</div>";
-  var text = rows.map(function (r) { return r[0] + " : " + r[1]; }).join("\n") + "\n\n" + message;
+    (message ? '<p style="white-space:pre-wrap;background:#f5f7fd;border:1px solid #d3dcf6;border-radius:8px;padding:14px;margin:0">' + escapeHtml(message) + "</p>" : "") +
+    '<p style="color:#586079;font-size:12px;margin-top:16px">' +
+    (email ? "Répondez directement à cet e-mail pour écrire à " + escapeHtml(name) + "." : "Pas d'e-mail fourni : rappelez " + escapeHtml(name) + " au " + escapeHtml(phone) + ".") +
+    "</p></div>";
+  var text = rows.map(function (r) { return r[0] + " : " + r[1]; }).join("\n") + (message ? "\n\n" + message : "");
+
+  var subjectTag = { renseignement: "Renseignement", inscription: "Pré-inscription", rappel: "À rappeler" }[type];
+  var payload = {
+    from: process.env.CONTACT_FROM || DEFAULT_FROM,
+    to: [process.env.CONTACT_TO || DEFAULT_TO],
+    subject: subjectTag + " — " + name + " (" + formation + ")",
+    html: html,
+    text: text
+  };
+  if (email) { payload.reply_to = email; }
 
   try {
     var resp = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from: process.env.CONTACT_FROM || DEFAULT_FROM,
-        to: [process.env.CONTACT_TO || DEFAULT_TO],
-        reply_to: email,
-        subject: "Contact site — " + name + (formation ? " (" + formation + ")" : ""),
-        html: html,
-        text: text
-      })
+      body: JSON.stringify(payload)
     });
     if (!resp.ok) {
       console.error("Resend a refusé l'envoi", resp.status, await resp.text());
