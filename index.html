@@ -368,6 +368,62 @@
         </div>
       </div>
 
+      <div class="container contact-form-wrap" id="contact-form">
+        <form class="contact-form" action="/api/contact" method="post" novalidate>
+          <div class="contact-form__head">
+            <h3>Écrivez-nous</h3>
+            <p>Une question sur une formation, un tarif ou votre inscription ? Nous vous répondons rapidement.</p>
+          </div>
+
+          <div class="contact-form__grid">
+            <label class="field">
+              <span class="field__label">Nom et prénom <abbr title="obligatoire">*</abbr></span>
+              <input type="text" name="name" autocomplete="name" maxlength="120" required />
+            </label>
+            <label class="field">
+              <span class="field__label">E-mail <abbr title="obligatoire">*</abbr></span>
+              <input type="email" name="email" autocomplete="email" maxlength="160" required />
+            </label>
+            <label class="field">
+              <span class="field__label">Téléphone</span>
+              <input type="tel" name="phone" autocomplete="tel" maxlength="30" />
+            </label>
+            <label class="field">
+              <span class="field__label">Formation souhaitée</span>
+              <select name="formation">
+                <option value="">— Choisir —</option>
+                <option>Permis B — voiture</option>
+                <option>Conduite accompagnée (AAC)</option>
+                <option>Permis moto (A1 / A2 / A)</option>
+                <option>Permis AM (cyclomoteur, voiturette)</option>
+                <option>Remorque (BE / B96)</option>
+                <option>Formations rapides</option>
+                <option>Autre demande</option>
+              </select>
+            </label>
+            <label class="field field--full">
+              <span class="field__label">Votre message <abbr title="obligatoire">*</abbr></span>
+              <textarea name="message" rows="5" maxlength="4000" required></textarea>
+            </label>
+          </div>
+
+          <!-- Champ piège pour les robots, invisible pour les visiteurs -->
+          <div class="contact-form__trap" aria-hidden="true">
+            <label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+
+          <label class="contact-form__consent">
+            <input type="checkbox" name="consent" required />
+            <span>J'accepte que mes informations soient utilisées pour répondre à ma demande. Elles ne sont ni conservées ni partagées.</span>
+          </label>
+
+          <div class="contact-form__foot">
+            <button type="submit" class="btn btn--primary">Envoyer le message</button>
+            <p class="contact-form__status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+
       <div class="container hours" id="horaires">
         <h3 class="hours__title">Horaires d'ouverture</h3>
         <div class="hours__grid">

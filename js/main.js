@@ -115,6 +115,74 @@
     });
   }
 
+  /* ---- Formulaire de contact (envoi via /api/contact → Resend) ---- */
+  var contactForm = document.querySelector(".contact-form");
+  if (contactForm) {
+    var statusEl = contactForm.querySelector(".contact-form__status");
+    var submitBtn = contactForm.querySelector('button[type="submit"]');
+
+    function setStatus(text, ok) {
+      statusEl.textContent = text;
+      statusEl.className = "contact-form__status " + (ok ? "is-ok" : "is-error");
+    }
+
+    // Retour d'un envoi sans JavaScript (redirection de la fonction)
+    var result = new URLSearchParams(window.location.search).get("contact");
+    if (result === "ok") { setStatus("Merci, votre message a bien été envoyé. Nous vous répondons rapidement.", true); }
+    else if (result === "erreur") { setStatus("L'envoi a échoué. Vérifiez le formulaire ou appelez-nous au 04 94 52 91 13.", false); }
+
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var invalid = [];
+      contactForm.querySelectorAll("[required]").forEach(function (input) {
+        var wrap = input.closest(".field, .contact-form__consent");
+        var bad = input.type === "checkbox" ? !input.checked : !input.checkValidity() || !input.value.trim();
+        if (wrap) { wrap.classList.toggle("is-invalid", bad); }
+        if (bad) { invalid.push(input); }
+      });
+      if (invalid.length) {
+        setStatus("Merci de compléter les champs en rouge.", false);
+        invalid[0].focus();
+        return;
+      }
+
+      var data = {};
+      new FormData(contactForm).forEach(function (value, key) { data[key] = value; });
+      data.consent = contactForm.querySelector('[name="consent"]').checked;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Envoi en cours…";
+      statusEl.textContent = "";
+
+      fetch(contactForm.getAttribute("action"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+        .then(function (resp) {
+          return resp.json().catch(function () { return {}; }).then(function (json) {
+            if (!resp.ok || !json.ok) { throw new Error(json.error || "L'envoi a échoué. Réessayez ou appelez-nous au 04 94 52 91 13."); }
+          });
+        })
+        .then(function () {
+          contactForm.reset();
+          setStatus("Merci, votre message a bien été envoyé. Nous vous répondons rapidement.", true);
+        })
+        .catch(function (err) {
+          setStatus(err.message, false);
+        })
+        .then(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Envoyer le message";
+        });
+    });
+
+    contactForm.addEventListener("input", function (e) {
+      var wrap = e.target.closest(".is-invalid");
+      if (wrap) { wrap.classList.remove("is-invalid"); }
+    });
+  }
+
   /* ---- Apparition au défilement ---- */
   var targets = document.querySelectorAll(
     ".card, .plus__list li, .price-card, .section__head, .award, .finance__note, .contact__dossier"
