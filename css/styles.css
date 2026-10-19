@@ -192,11 +192,14 @@ body { padding-top: var(--header-h); }
   padding: clamp(40px, 5vw, 70px) 0;
 }
 
-/* Voiture et moto auto-école qui traversent la colonne de texte, juste au-dessus des boutons */
+/* Voiture et moto auto-école : la route part de la colonne de texte, juste au-dessus des
+   boutons, et file jusqu'au bord droit de l'écran en passant derrière l'encart « Meilleures
+   Auto-Écoles ». Le bandeau (overflow: hidden) coupe ce qui dépasse. */
 .hero__road {
-  position: relative; height: 80px; margin: 6px 0 0; overflow: hidden;
+  position: relative; z-index: 0; width: 100vw; height: 80px; margin: 6px 0 0; overflow: hidden;
   container-type: inline-size; pointer-events: none;
 }
+.award { position: relative; z-index: 1; }
 .hero__road + .hero__cta { margin-top: 12px; }
 .hero__road::before {
   content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: 1px;
@@ -204,7 +207,7 @@ body { padding-top: var(--header-h); }
 }
 .hero__vehicle {
   position: absolute; left: 0; bottom: 4px; width: 180px;
-  animation: hero-drive 11s cubic-bezier(.45, 0, .55, 1) infinite;
+  animation: hero-drive 14s cubic-bezier(.45, 0, .55, 1) infinite;
 }
 .hero__car { display: block; width: 100%; height: auto; }
 /* Traînées de vitesse derrière chaque véhicule */
@@ -218,7 +221,7 @@ body { padding-top: var(--header-h); }
 .hero__body { animation: hero-bob .5s ease-in-out infinite alternate; }
 .hero__beam { animation: hero-beam 2.6s ease-in-out infinite alternate; }
 .hero__wheel { transform-box: fill-box; transform-origin: center; animation: wheel-spin .5s linear infinite; }
-/* 100cqw = largeur de la route (la colonne de texte), et non plus celle de l'écran */
+/* 100cqw = longueur de la route, du début de la colonne de texte au bord de l'écran */
 @keyframes hero-drive {
   0% { transform: translateX(-230px); }
   62%, 100% { transform: translateX(calc(100cqw + 30px)); }
