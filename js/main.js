@@ -222,7 +222,23 @@
     }
 
     contactForm.addEventListener("change", updateFields);
+
+    // Arrivée depuis une page formation : formation (et boîte) déjà sélectionnées
+    var params = new URLSearchParams(window.location.search);
+    var wantedFormation = params.get("formation");
+    var wantedGearbox = params.get("gearbox");
+    if (wantedFormation) {
+      var formationSelect = contactForm.querySelector('[name="formation"]');
+      Array.prototype.forEach.call(formationSelect.options, function (opt) {
+        if (opt.value === wantedFormation) { formationSelect.value = opt.value; }
+      });
+    }
     updateFields();
+    if (wantedGearbox) {
+      contactForm.querySelectorAll('[name="gearbox"]').forEach(function (radio) {
+        if (radio.value === wantedGearbox && !radio.disabled) { radio.checked = true; }
+      });
+    }
 
     // Retour d'un envoi sans JavaScript (redirection de la fonction)
     var result = new URLSearchParams(window.location.search).get("contact");

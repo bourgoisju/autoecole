@@ -377,6 +377,94 @@ body { padding-top: var(--header-h); }
 .finance__tva { color: #9fb0e0; font-size: .86rem; margin: 0; }
 
 /* =====================================================================
+   PAGES FORMATIONS
+   ===================================================================== */
+.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 26px; font-size: .86rem; color: var(--muted); }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--blue); }
+.breadcrumb [aria-current] { color: var(--navy); font-weight: 600; }
+.page-hero--formation .page-hero__top { grid-template-columns: minmax(0, 1fr) auto; gap: clamp(28px, 5vw, 64px); }
+.page-hero--formation h1 { max-width: 20ch; }
+.page-hero--formation .hero__cta { margin-bottom: 0; }
+
+/* Badge visuel : véhicule, catégorie et prix d'appel */
+.formation-badge {
+  position: relative; display: flex; flex-direction: column; align-items: center; text-align: center;
+  width: clamp(230px, 24vw, 290px); padding: 34px 26px 28px;
+  background: #fff; border: 1px solid var(--blue-line); border-radius: 22px; box-shadow: var(--shadow);
+}
+.formation-badge svg { width: 150px; height: 94px; color: var(--blue); margin-bottom: 14px; }
+.formation-badge__pin {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  min-width: 52px; padding: 7px 14px; border-radius: 10px; background: var(--blue); color: #fff;
+  font-family: var(--ff-head); font-weight: 800; letter-spacing: .03em;
+}
+.formation-badge__from { color: var(--muted); font-size: .85rem; }
+.formation-badge__price { font-family: var(--ff-head); font-weight: 800; font-size: 2.3rem; line-height: 1.1; color: var(--navy); }
+
+/* Chiffres clés sous l'en-tête */
+.facts {
+  list-style: none; margin: clamp(30px, 4vw, 44px) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;
+}
+.facts li { background: #fff; border: 1px solid var(--blue-line); border-radius: var(--radius-sm); padding: 14px 18px; }
+.facts span { display: block; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+.facts strong { font-family: var(--ff-head); color: var(--navy); font-size: 1.05rem; }
+
+/* Étapes numérotées */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; }
+.steps li { position: relative; background: #fff; border: 1px solid var(--blue-line); border-radius: var(--radius); padding: 24px 22px 22px; box-shadow: var(--shadow-sm); }
+.steps h3 { color: var(--blue); font-size: 1.05rem; margin-bottom: 8px; }
+.steps p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+/* Avantages */
+.benefits { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.benefits li { background: #fff; border: 1px solid var(--blue-line); border-radius: var(--radius); padding: 26px 24px; }
+.benefits h3 { margin-bottom: 8px; }
+.benefits h3::before { content: "✓"; display: inline-grid; place-items: center; width: 26px; height: 26px; margin-right: 10px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); font-size: .8rem; vertical-align: 2px; }
+.benefits p { margin: 0; color: var(--muted); font-size: .96rem; }
+
+/* Texte + encadré financement */
+.prose-split { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, .9fr); gap: clamp(28px, 4vw, 54px); align-items: start; }
+.prose p { color: var(--ink); line-height: 1.75; }
+.prose p:last-child { margin-bottom: 0; }
+.prose a { font-weight: 600; }
+.prose-aside { background: var(--navy); color: #dfe6fb; border-radius: var(--radius); padding: 28px 26px; box-shadow: var(--shadow); }
+.prose-aside h3 { color: #fff; }
+.prose-aside .checks li { color: #dfe6fb; }
+.prose-aside .checks li::before { background: rgba(255,255,255,.12); color: #fff; }
+.prose-aside__link { display: inline-block; margin-top: 18px; color: #fff; font-family: var(--ff-head); font-weight: 700; font-size: .92rem; }
+.prose-aside__link:hover { color: #adbcfa; }
+.prose-aside:empty { display: none; }
+
+/* Liens vers les autres formations */
+.related__title { font-size: 1.3rem; margin-bottom: 18px; }
+.related__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.related__link {
+  display: flex; flex-direction: column; gap: 2px; padding: 18px 20px; background: #fff;
+  border: 1px solid var(--blue-line); border-radius: var(--radius-sm); transition: border-color .15s ease, transform .15s ease;
+}
+.related__link strong { font-family: var(--ff-head); color: var(--navy); }
+.related__link span { color: var(--muted); font-size: .88rem; }
+.related__link:hover { border-color: var(--blue); transform: translateY(-2px); }
+.related__link:hover strong { color: var(--blue); }
+
+@media (max-width: 940px) {
+  .page-hero--formation .page-hero__top { grid-template-columns: 1fr; }
+  .formation-badge { flex-direction: row; justify-content: flex-start; gap: 16px; width: 100%; padding: 22px 22px 18px; text-align: left; }
+  .formation-badge svg { width: 84px; height: 54px; margin: 0; }
+  .formation-badge__pin { left: 22px; transform: none; }
+  .formation-badge__from { margin-left: auto; }
+  .facts, .related__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prose-split { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .formation-badge__price { font-size: 1.8rem; }
+  .formation-badge__from { display: none; }
+  .formation-badge strong { margin-left: auto; }
+}
+
+/* =====================================================================
    FAQ
    ===================================================================== */
 .faq { max-width: 860px; margin: 0 auto; display: grid; gap: 12px; }
@@ -594,7 +682,8 @@ body { padding-top: var(--header-h); }
    FOOTER
    ===================================================================== */
 .site-footer { background: var(--navy); color: #c7d1ee; }
-.footer__inner { display: grid; grid-template-columns: 1.3fr .8fr 1.4fr; gap: 36px; padding-block: 48px; }
+.footer__inner { display: grid; grid-template-columns: 1.15fr .95fr .85fr 1.3fr; gap: 36px; padding-block: 48px; }
+.footer__title { margin: 0 0 4px; font-family: var(--ff-head); font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #fff; }
 .footer__logo { height: 40px; background: #fff; padding: 7px 9px; border-radius: 8px; margin-bottom: 14px; }
 .footer__brand p { margin: 0; font-size: .95rem; color: #9fb0e0; max-width: 32ch; }
 .footer__nav { display: flex; flex-direction: column; gap: 10px; }
