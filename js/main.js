@@ -42,7 +42,10 @@
   if (header) {
     var compactTick = false;
     function updateHeader() {
-      header.classList.toggle("is-compact", window.scrollY > 40);
+      // Seuils différents à l'aller et au retour : pas de bascule répétée autour d'une seule valeur
+      var y = window.scrollY;
+      if (y > 60) { header.classList.add("is-compact"); }
+      else if (y < 20) { header.classList.remove("is-compact"); }
       compactTick = false;
     }
     window.addEventListener("scroll", function () {

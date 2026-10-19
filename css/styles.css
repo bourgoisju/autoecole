@@ -22,6 +22,7 @@
   --shadow-sm: 0 4px 14px rgba(10, 23, 63, 0.07);
   --maxw: 1140px;
   --edge: 22px;
+  --header-h: 101px;
 
   --ff-head: "Montserrat", system-ui, sans-serif;
   --ff-body: "Open Sans", system-ui, sans-serif;
@@ -110,8 +111,11 @@ p { margin: 0 0 1rem; }
 /* =====================================================================
    HEADER
    ===================================================================== */
+/* En-tête fixe : la page réserve sa hauteur une fois pour toutes, si bien que sa
+   réduction au défilement ne décale plus le contenu (sinon, effet de tremblement). */
+body { padding-top: var(--header-h); }
 .site-header {
-  position: sticky; top: 0; z-index: 100;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: rgba(255,255,255,.92);
   backdrop-filter: saturate(140%) blur(8px);
   border-bottom: 1px solid var(--blue-line);
