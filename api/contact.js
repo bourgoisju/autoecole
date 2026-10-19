@@ -10,14 +10,14 @@
    - CONTACT_REPLY_TO (facultatif) adresse de réponse de l'accusé de réception,
                                    par défaut autoecoletourdemare@gmail.com
    - SITE_URL        (facultatif)  adresse du site (logo, liens), par défaut https://autoecole.antonyaddy.com
-   - CONTACT_FROM    (facultatif)  expéditeur, par défaut contact@autoecole.antonyaddy.com
+   - CONTACT_FROM    (facultatif)  expéditeur, par défaut contact@antonyaddy.com
                                    (domaine vérifié dans Resend)
    ===================================================================== */
 
 var emails = require("./_emails");
 
 var DEFAULT_TO = "bourgois.ju@gmail.com";
-var DEFAULT_FROM = "Auto-école La Tour de Mare <contact@autoecole.antonyaddy.com>";
+var DEFAULT_FROM = "Auto-école La Tour de Mare <contact@antonyaddy.com>";
 var DEFAULT_REPLY_TO = "autoecoletourdemare@gmail.com";
 var DEFAULT_SITE = "https://autoecole.antonyaddy.com";
 
