@@ -9,18 +9,17 @@
    - CONTACT_TO      (facultatif)  destinataire des notifications, par défaut bourgois.ju@gmail.com
    - CONTACT_REPLY_TO (facultatif) adresse de réponse de l'accusé de réception,
                                    par défaut autoecoletourdemare@gmail.com
-   - SITE_URL        (facultatif)  adresse du site (logo, liens), par défaut https://autoecole-smoky.vercel.app
-   - CONTACT_FROM    (facultatif)  expéditeur, par défaut onboarding@resend.dev
-                                   (à remplacer par une adresse de votre domaine
-                                   une fois celui-ci vérifié dans Resend)
+   - SITE_URL        (facultatif)  adresse du site (logo, liens), par défaut https://autoecole.antonyaddy.com
+   - CONTACT_FROM    (facultatif)  expéditeur, par défaut contact@autoecole.antonyaddy.com
+                                   (domaine vérifié dans Resend)
    ===================================================================== */
 
 var emails = require("./_emails");
 
 var DEFAULT_TO = "bourgois.ju@gmail.com";
-var DEFAULT_FROM = "Auto-école La Tour de Mare <onboarding@resend.dev>";
+var DEFAULT_FROM = "Auto-école La Tour de Mare <contact@autoecole.antonyaddy.com>";
 var DEFAULT_REPLY_TO = "autoecoletourdemare@gmail.com";
-var DEFAULT_SITE = "https://autoecole-smoky.vercel.app";
+var DEFAULT_SITE = "https://autoecole.antonyaddy.com";
 
 var TYPES = {
   renseignement: "Demande de renseignement",
