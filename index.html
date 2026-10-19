@@ -16,17 +16,20 @@
   <!-- ======================= HEADER ======================= -->
   <header class="site-header" id="top">
     <div class="container header__inner">
-      <a class="brand" href="index.html" aria-label="Accueil — Auto-école La Tour de Mare">
+      <a class="brand" href="#top" aria-label="Accueil — Auto-école La Tour de Mare">
         <img src="assets/img/logo.jpg" alt="Auto-école La Tour de Mare" class="brand__logo" />
       </a>
 
       <nav class="nav" id="nav" aria-label="Navigation principale">
-        <a href="index.html" class="nav__link is-active">Accueil</a>
-        <a href="index.html#formations" class="nav__link">Formations</a>
+        <a href="#top" class="nav__link is-active" data-spy="top" aria-current="page">Accueil</a>
+        <a href="#formations" class="nav__link" data-spy="formations">Formations</a>
         <a href="tarifs.html" class="nav__link">Tarifs</a>
-        <a href="index.html#plus" class="nav__link">Le petit +</a>
-        <a href="index.html#contact" class="nav__link">Contact</a>
-        <a href="tel:+33494529113" class="btn btn--phone nav__phone">04 94 52 91 13</a>
+        <a href="#plus" class="nav__link" data-spy="plus">Le petit +</a>
+        <a href="#contact" class="nav__link" data-spy="contact">Contact</a>
+        <div class="nav__actions">
+          <a href="#contact-form" class="btn btn--ghost nav__write">Nous écrire</a>
+          <a href="tel:+33494529113" class="btn btn--phone nav__phone">04 94 52 91 13</a>
+        </div>
       </nav>
 
       <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
