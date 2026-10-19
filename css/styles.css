@@ -373,6 +373,47 @@ p { margin: 0 0 1rem; }
 .finance__tva { color: #9fb0e0; font-size: .86rem; margin: 0; }
 
 /* =====================================================================
+   FAQ
+   ===================================================================== */
+.faq { max-width: 860px; margin: 0 auto; display: grid; gap: 12px; }
+.faq__item {
+  background: #fff; border: 1px solid var(--blue-line); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm); transition: border-color .2s ease, box-shadow .2s ease;
+}
+.faq__item:hover { border-color: #c0cdf2; }
+.faq__item[open] { border-color: var(--blue); box-shadow: 0 10px 26px rgba(18, 59, 209, .1); }
+.faq__q {
+  list-style: none; cursor: pointer; position: relative;
+  padding: 20px 64px 20px 24px;
+  font-family: var(--ff-head); font-weight: 700; font-size: 1.04rem; line-height: 1.4; color: var(--navy);
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q::marker { content: ""; }
+.faq__q::before, .faq__q::after {
+  content: ""; position: absolute; right: 26px; top: 50%; width: 14px; height: 2px; margin-top: -1px;
+  background: var(--blue); border-radius: 2px; transition: transform .25s ease, opacity .25s ease;
+}
+.faq__q::after { transform: rotate(90deg); }
+.faq__item[open] .faq__q::after { transform: rotate(0deg); opacity: 0; }
+.faq__q:hover { color: var(--blue); }
+.faq__q:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: var(--radius); }
+.faq__a { padding: 0 24px 22px; }
+.faq__a p { margin: 0; color: var(--muted); line-height: 1.7; }
+.faq__a strong { color: var(--navy); }
+.faq__a a { font-weight: 600; }
+.faq__item[open] .faq__a { animation: faq-open .3s ease; }
+@keyframes faq-open { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 560px) {
+  .faq__q { padding: 17px 52px 17px 18px; font-size: .98rem; }
+  .faq__q::before, .faq__q::after { right: 20px; }
+  .faq__a { padding: 0 18px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .faq__item[open] .faq__a { animation: none; }
+  .faq__q::before, .faq__q::after { transition: none; }
+}
+
+/* =====================================================================
    CONTACT
    ===================================================================== */
 .contact { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 48px); align-items: start; margin-bottom: 40px; }
