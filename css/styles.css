@@ -349,7 +349,11 @@ body { padding-top: var(--header-h); }
 /* =====================================================================
    LE PETIT +
    ===================================================================== */
-.plus__head { max-width: 640px; margin-bottom: 36px; }
+.plus__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .85fr); gap: clamp(24px, 4vw, 52px); align-items: center; margin-bottom: 36px; }
+.plus__head { max-width: 640px; }
+.plus__photo { margin: 0; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 16 / 9; background: var(--blue-soft); }
+.plus__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+@media (max-width: 760px) { .plus__intro { grid-template-columns: 1fr; } }
 .plus__head p { color: var(--muted); }
 .plus__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; counter-reset: plus; }
 .plus__list li { background: #fff; border: 1px solid var(--blue-line); border-radius: var(--radius); padding: 26px 24px; position: relative; }
@@ -397,20 +401,25 @@ body { padding-top: var(--header-h); }
 .page-hero--formation h1 { max-width: 20ch; }
 .page-hero--formation .hero__cta { margin-bottom: 0; }
 
-/* Badge visuel : véhicule, catégorie et prix d'appel */
-.formation-badge {
-  position: relative; display: flex; flex-direction: column; align-items: center; text-align: center;
-  width: clamp(230px, 24vw, 290px); padding: 34px 26px 28px;
-  background: #fff; border: 1px solid var(--blue-line); border-radius: 22px; box-shadow: var(--shadow);
+/* Photo d'illustration à droite de l'en-tête, avec le prix d'appel en étiquette */
+.formation-photo {
+  position: relative; margin: 0; width: clamp(300px, 34vw, 450px); aspect-ratio: 5 / 4;
+  border-radius: 22px; overflow: hidden; box-shadow: var(--shadow); background: var(--blue-soft);
 }
-.formation-badge svg { width: 150px; height: 94px; color: var(--blue); margin-bottom: 14px; }
-.formation-badge__pin {
-  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-  min-width: 52px; padding: 7px 14px; border-radius: 10px; background: var(--blue); color: #fff;
-  font-family: var(--ff-head); font-weight: 800; letter-spacing: .03em;
+.formation-photo img { width: 100%; height: 100%; object-fit: cover; }
+.formation-photo img[src*="cle-voiture"] { object-position: 50% 32%; }
+.formation-photo img[src*="plateau-moto"] { object-position: 50% 58%; }
+.formation-photo__price {
+  position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px 10px 10px; border-radius: 14px; background: rgba(255, 255, 255, .95);
+  box-shadow: 0 10px 24px rgba(10, 23, 63, .18); backdrop-filter: blur(6px);
 }
-.formation-badge__from { color: var(--muted); font-size: .85rem; }
-.formation-badge__price { font-family: var(--ff-head); font-weight: 800; font-size: 2.3rem; line-height: 1.1; color: var(--navy); }
+.formation-photo__pin {
+  min-width: 44px; padding: 7px 10px; border-radius: 9px; background: var(--blue); color: #fff; text-align: center;
+  font-family: var(--ff-head); font-weight: 800; font-size: .9rem; letter-spacing: .03em;
+}
+.formation-photo__from { color: var(--muted); font-size: .82rem; }
+.formation-photo__price strong { font-family: var(--ff-head); font-weight: 800; font-size: 1.6rem; line-height: 1; color: var(--navy); }
 
 /* Chiffres clés sous l'en-tête */
 .facts {
@@ -461,17 +470,13 @@ body { padding-top: var(--header-h); }
 
 @media (max-width: 940px) {
   .page-hero--formation .page-hero__top { grid-template-columns: 1fr; }
-  .formation-badge { flex-direction: row; justify-content: flex-start; gap: 16px; width: 100%; padding: 22px 22px 18px; text-align: left; }
-  .formation-badge svg { width: 84px; height: 54px; margin: 0; }
-  .formation-badge__pin { left: 22px; transform: none; }
-  .formation-badge__from { margin-left: auto; }
+  .formation-photo { width: 100%; aspect-ratio: 16 / 10; }
   .facts, .related__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prose-split { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
-  .formation-badge__price { font-size: 1.8rem; }
-  .formation-badge__from { display: none; }
-  .formation-badge strong { margin-left: auto; }
+  .formation-photo__price { left: 12px; bottom: 12px; }
+  .formation-photo__price strong { font-size: 1.35rem; }
 }
 
 /* =====================================================================
@@ -617,13 +622,23 @@ body { padding-top: var(--header-h); }
 .hours__list dd { margin: 0; font-family: var(--ff-head); font-weight: 600; color: var(--navy); text-align: right; }
 .hours__list dd span { display: block; white-space: nowrap; }
 .hours__list .hours__closed { color: var(--muted); font-weight: 500; }
-.contact__arrival { display: flex; align-items: center; gap: 20px; margin-bottom: 18px; }
+/* Bandeau « Votre prochain départ » sur fond de l'Estérel */
+.contact__arrival {
+  display: flex; align-items: center; gap: 20px; margin-bottom: 18px; padding: clamp(26px, 4vw, 40px) clamp(22px, 4vw, 40px);
+  border-radius: var(--radius); color: #fff; box-shadow: var(--shadow);
+  background: linear-gradient(100deg, rgba(10, 23, 63, .88) 0%, rgba(10, 23, 63, .62) 55%, rgba(10, 23, 63, .25) 100%), url("../assets/img/photos/esterel.jpg") center 40% / cover no-repeat;
+}
+.container.contact__arrival { width: calc(100% - 2 * var(--edge)); max-width: calc(var(--maxw) - 2 * var(--edge)); }
 .contact__arrival-copy { min-width: 0; }
 .contact__arrival strong, .contact__arrival span, .contact__arrival small { display: block; }
-.contact__arrival strong { font-family: var(--ff-head); color: var(--navy); }
-.contact__arrival span { color: var(--muted); font-size: .88rem; }
-.contact__arrival small { color: var(--muted); font-size: .75rem; margin-top: 3px; }
-.contact__arrival a { margin-left: auto; font-family: var(--ff-head); font-size: .88rem; font-weight: 700; white-space: nowrap; }
+.contact__arrival strong { font-family: var(--ff-head); color: #fff; font-size: 1.3rem; margin-bottom: 2px; }
+.contact__arrival span { color: #e3e9fb; font-size: .95rem; }
+.contact__arrival small { color: #c3cdee; font-size: .8rem; margin-top: 4px; }
+.contact__arrival a {
+  margin-left: auto; flex: none; padding: .7em 1.2em; border-radius: 999px; background: #fff; color: var(--blue);
+  font-family: var(--ff-head); font-size: .9rem; font-weight: 700; white-space: nowrap; transition: transform .15s ease;
+}
+.contact__arrival a:hover { color: var(--blue-dark); transform: translateY(-2px); }
 .map { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--blue-line); box-shadow: var(--shadow-sm); }
 .map iframe { width: 100%; height: 380px; border: 0; display: block; }
 
