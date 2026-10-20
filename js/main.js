@@ -63,6 +63,13 @@
       var section = id === "top" ? document.querySelector(".hero") : document.getElementById(id);
       if (section) { spySections.push({ id: id, el: section }); }
     });
+    // Le bloc formulaire / horaires / carte, placé après la FAQ, relève aussi de « Contact »
+    var writeSection = document.getElementById("ecrire");
+    if (writeSection) { spySections.push({ id: "contact", el: writeSection }); }
+    // Ordre réel des sections dans la page (et non l'ordre du menu)
+    spySections.sort(function (a, b) {
+      return a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+    });
     var spyCurrent = null, spyTick = false;
     function updateSpy() {
       spyTick = false;
