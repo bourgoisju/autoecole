@@ -407,10 +407,8 @@ body { padding-top: var(--header-h); }
 }
 .formation-photo img { width: 100%; height: 100%; object-fit: cover; }
 .formation-photo img[src*="voiture-caravane"] { object-position: 50% 62%; }
-/* Caravane et scooter : le sujet est en bas de la photo, l'étiquette de prix passe en haut */
-.formation-photo:has(img[src*="voiture-caravane"]) .formation-photo__price,
-.formation-photo:has(img[src*="scooter"]) .formation-photo__price { top: 16px; bottom: auto; }
-.formation-photo img[src*="scooter"] { object-position: 50% 75%; }
+/* Caravane : le sujet est en bas de la photo, l'étiquette de prix passe en haut, sur la brume */
+.formation-photo:has(img[src*="voiture-caravane"]) .formation-photo__price { top: 16px; bottom: auto; }
 .formation-photo__price {
   position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; gap: 10px;
   padding: 10px 16px 10px 10px; border-radius: 14px; background: rgba(255, 255, 255, .95);
